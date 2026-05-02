@@ -51,14 +51,14 @@ func (suite *MockAddressTestSuite) TestCityWithUnsupportedLocale() {
 
 func (suite *MockAddressTestSuite) TestCityFromStateWithUnsupportedLocale() {
 	assert.Panics(suite.T(), func() {
-		suite.address.CityFromState(suite.rng, "unsupported-locale", "California")
+		suite.address.CityFromState(suite.rng, "unsupported-locale", "CA")
 	}, fmt.Sprintf("CityFromState should panic when an unsupported locale is provided [seeds: %d, %d]", suite.seeds[0], suite.seeds[1]))
 }
 
 func (suite *MockAddressTestSuite) TestCityFromStateWithUnsupportedState() {
 	for locale := range availableLocales {
 		assert.Panics(suite.T(), func() {
-			suite.address.CityFromState(suite.rng, locale, "Unsupported State")
+			suite.address.CityFromState(suite.rng, locale, "Unsupported State Code")
 		}, fmt.Sprintf("CityFromState should panic when an unsupported state is provided [seeds: %d, %d]", suite.seeds[0], suite.seeds[1]))
 	}
 }
@@ -124,9 +124,9 @@ func (suite *MockAddressTestSuite) TestCity() {
 
 func (suite *MockAddressTestSuite) TestCityFromState() {
 	for locale := range availableLocales {
-		pickedState := suite.address.State(suite.rng, locale)
-		city := suite.address.CityFromState(suite.rng, locale, pickedState)
-		assert.NotEmpty(suite.T(), city, fmt.Sprintf("CityFromState should return a non-empty string for locale: %s and state: %s [seeds: %d, %d]", locale, pickedState, suite.seeds[0], suite.seeds[1]))
+		pickedStateCode := suite.address.StateCode(suite.rng, locale)
+		city := suite.address.CityFromState(suite.rng, locale, pickedStateCode)
+		assert.NotEmpty(suite.T(), city, fmt.Sprintf("CityFromState should return a non-empty string for locale: %s and state code: %s [seeds: %d, %d]", locale, pickedStateCode, suite.seeds[0], suite.seeds[1]))
 	}
 }
 

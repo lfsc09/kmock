@@ -12,17 +12,14 @@ import (
 )
 
 const (
-	sliceMinSize = 1  // minimum size for generated slices/arrays/maps
-	sliceMaxSize = 10 // maximum size for generated slices/arrays/maps
+	letterLowerCaseStart = 97  // ASCII code for 'a'
+	letterLowerCaseEnd   = 122 // ASCII code for 'z'
+	letterUpperCaseStart = 65  // ASCII code for 'A'
+	letterUpperCaseEnd   = 90  // ASCII code for 'Z'
+	asciiPrintableStart  = 32  // ASCII code for space character
+	asciiPrintableEnd    = 126 // ASCII code for '~' character
 
-	lowerCaseA = 97  // ASCII code for 'a'
-	lowerCaseZ = 122 // ASCII code for 'z'
-	upperCaseA = 65  // ASCII code for 'A'
-	upperCaseZ = 90  // ASCII code for 'Z'
-	asciiStart = 97  // start of printable ASCII characters
-	asciiEnd   = 126 // end of printable ASCII characters
-
-	stringLength = 10 // default length for generated strings
+	stringLength = 1000 // default length for generated strings
 )
 
 const (
@@ -42,11 +39,11 @@ var stringBuilderPool = sync.Pool{
 	},
 }
 
-func getStringBuilder() *strings.Builder {
+func GetStringBuilder() *strings.Builder {
 	return stringBuilderPool.Get().(*strings.Builder)
 }
 
-func putStringBuilder(sb *strings.Builder) {
+func PutStringBuilder(sb *strings.Builder) {
 	sb.Reset()
 	stringBuilderPool.Put(sb)
 }
@@ -71,11 +68,6 @@ func RandomBool(rng *rand.Rand, probTrue float64) bool {
 // RandomDigit generates a random digit (0-9) using the provided random number generator.
 func RandomDigit(rng *rand.Rand) int {
 	return rng.Int() % 10
-}
-
-// RandomDigitNotZero generates a random digit (1-9) using the provided random number generator.
-func RandomDigitNotZero(rng *rand.Rand) int {
-	return (rng.Int() % 9) + 1
 }
 
 // RandomIntegerBetween generates a random integer between min and max (inclusive) using the provided random number generator.
@@ -104,16 +96,24 @@ func RandomIntegerBetween[T int | int32 | int64 | uint | uint32 | uint64](rng *r
 	}
 }
 
-// RandomIntegerByDecimals generates a random integer with the specified number of decimal digits using the provided random number generator.
-func RandomIntegerByDecimals[T int | int32 | int64 | uint | uint32 | uint64](rng *rand.Rand, decimals int) T {
-	if decimals <= 1 {
-		return T(RandomDigit(rng))
+// RandomInteger generates a random integer of the specified type using the provided random number generator.
+func RandomInteger[T int | int32 | int64 | uint | uint32 | uint64](rng *rand.Rand) T {
+	switch any(T(0)).(type) {
+	case int:
+		return T(rng.Int())
+	case int32:
+		return T(rng.Int32())
+	case int64:
+		return T(rng.Int64())
+	case uint:
+		return T(rng.Uint())
+	case uint32:
+		return T(rng.Uint32())
+	case uint64:
+		return T(rng.Uint64())
+	default:
+		panic("unsupported type")
 	}
-
-	minN := T(math.Pow10(decimals - 1))
-	maxN := T(math.Pow10(decimals)) - 1
-
-	return RandomIntegerBetween(rng, minN, maxN)
 }
 
 // RandomFloatBetween generates a random float between min and max with the specified number of decimal places using the provided random number generator.
@@ -142,60 +142,101 @@ func RandomFloatBetween(rng *rand.Rand, decimals int, decimalsExact bool, min, m
 	return math.Ceil(randomValue*scale) / scale
 }
 
-// RandomASCIICharacter generates a random printable ASCII character (from 97 to 126) using the provided random number generator.
+func RandomFloat(rng *rand.Rand) float64 {
+	return rng.Float64()
+}
+
+// RandomLetter generates a random letter (A-Z or a-z) based on the upperCase parameter using the provided random number generator.
+func RandomLetter(rng *rand.Rand, upperCase bool) string {
+	if upperCase {
+		return string(byte(rng.Int()%(letterUpperCaseEnd-letterUpperCaseStart+1) + letterUpperCaseStart))
+	}
+	return string(byte(rng.Int()%(letterLowerCaseEnd-letterLowerCaseStart+1) + letterLowerCaseStart))
+}
+
+// RandomAlphanumeric generates a random alphanumeric character (0-9, a-z, A-Z) based on the upperCase parameter using the provided random number generator.
+func RandomAlphanumeric(rng *rand.Rand, upperCase bool) string {
+	choices := []int{0, 1}
+	picked := PickFromList(rng, choices)
+	if picked == 0 {
+		return strconv.Itoa(RandomDigit(rng))
+	}
+	return RandomLetter(rng, upperCase)
+}
+
+// RandomASCIICharacter generates a random printable ASCII character (from 32 to 126) using the provided random number generator.
 func RandomASCIICharacter(rng *rand.Rand) string {
-	return string(byte(rng.Int()%(asciiEnd-asciiStart+1) + asciiStart))
+	return string(byte(rng.Int()%(asciiPrintableEnd-asciiPrintableStart+1) + asciiPrintableStart))
 }
 
-// RandomLetter generates a random lowercase letter (a-z) using the provided random number generator.
-func RandomLowerCaseLetter(rng *rand.Rand) string {
-	return string(byte(rng.Int()%(lowerCaseZ-lowerCaseA+1) + lowerCaseA))
-}
-
-// RandomUpperCaseLetter generates a random uppercase letter (A-Z) using the provided random number generator.
-func RandomUpperCaseLetter(rng *rand.Rand) string {
-	return string(byte(rng.Int()%(upperCaseZ-upperCaseA+1) + upperCaseA))
-}
-
-// RandomLowerCaseString generates a random string of the specified length consisting of lowercase letters (a-z) using the provided random number generator.
-func RandomLowerCaseString(rng *rand.Rand, length int) string {
+// RandomString generates a random string of the specified length and case using the provided random number generator.
+// If upperCase is true, the string will contain only uppercase letters.
+// The length is capped at 'stringLength' to prevent excessive memory usage.
+func RandomString(rng *rand.Rand, length int, upperCase bool) string {
 	if length <= 0 {
 		return ""
 	}
 
 	// Cap length to prevent excessive memory usage
-	if length > 1000 {
-		length = 1000
+	if length > stringLength {
+		length = stringLength
 	}
 
-	sb := getStringBuilder()
-	defer putStringBuilder(sb)
+	sb := GetStringBuilder()
+	defer PutStringBuilder(sb)
 
 	sb.Grow(length)
 	for range length {
-		sb.WriteString(RandomLowerCaseLetter(rng))
+		sb.WriteString(RandomLetter(rng, upperCase))
 	}
 
 	return sb.String()
 }
 
-// RandomUpperCaseString generates a random string of the specified length consisting of uppercase letters (A-Z) using the provided random number generator.
-func RandomUpperCaseString(rng *rand.Rand, length int) string {
-	if length <= 0 {
-		return ""
-	}
+// RandomStringTemplate generates a random string filling in the provided template, where:
+// - '\d' is replaced with a random digit (0-9)
+// - '\a' is replaced with a random alphanumeric character (0-9, a-z)
+// - '\A' is replaced with a random alphanumeric character (0-9, A-Z)
+// - '\l' is replaced with a random lowercase letter (a-z)
+// - '\L' is replaced with a random uppercase letter (A-Z)
+// - '\.' is replaced with a random printable ASCII 32-126 character
+// Any other characters in the template are left unchanged.
+func RandomStringTemplate(rng *rand.Rand, template string) string {
+	sb := GetStringBuilder()
+	defer PutStringBuilder(sb)
 
-	// Cap length to prevent excessive memory usage
-	if length > 1000 {
-		length = 1000
-	}
-
-	sb := getStringBuilder()
-	defer putStringBuilder(sb)
-
-	sb.Grow(length)
-	for range length {
-		sb.WriteString(RandomUpperCaseLetter(rng))
+	i := 0
+	for i < len(template) {
+		if template[i] == '\\' && i+1 < len(template) {
+			switch template[i+1] {
+			case 'd':
+				sb.WriteString(strconv.Itoa(RandomDigit(rng)))
+				i += 2
+				continue
+			case 'a':
+				sb.WriteString(RandomAlphanumeric(rng, false))
+				i += 2
+				continue
+			case 'A':
+				sb.WriteString(RandomAlphanumeric(rng, true))
+				i += 2
+				continue
+			case 'l':
+				sb.WriteString(RandomLetter(rng, false))
+				i += 2
+				continue
+			case 'L':
+				sb.WriteString(RandomLetter(rng, true))
+				i += 2
+				continue
+			case '.':
+				sb.WriteString(RandomASCIICharacter(rng))
+				i += 2
+				continue
+			}
+		}
+		sb.WriteByte(template[i])
+		i++
 	}
 
 	return sb.String()
@@ -254,34 +295,14 @@ func PickFromMapValues[K comparable, V any](rng *rand.Rand, m map[K]V) V {
 	return zero
 }
 
-// RandomStringTemplate generates a random string filling in the provided template, where:
-// - '#' is replaced with a random digit (0-9)
-// - '%' is replaced with a random alphanumeric character (0-9, a-z)
-// - '&' is replaced with a random alphanumeric character (0-9, A-Z)
-// - '?' is replaced with a random lowercase letter (a-z)
-// - '!' is replaced with a random uppercase letter (A-Z)
-// - '*' is replaced with a random printable ASCII 97-126 character
-// Any other characters in the template are left unchanged.
-func RandomStringTemplate(rng *rand.Rand, template string) string {
-	sb := getStringBuilder()
-	defer putStringBuilder(sb)
-
-	for _, ch := range template {
-		switch ch {
-		case '#':
-			sb.WriteString(strconv.Itoa(RandomDigit(rng)))
-		case '?':
-			sb.WriteString(RandomLowerCaseLetter(rng))
-		case '!':
-			sb.WriteString(RandomUpperCaseLetter(rng))
-		case '*':
-			sb.WriteString(RandomASCIICharacter(rng))
-		default:
-			sb.WriteRune(ch)
-		}
+// RandomDateTime generates a random time between the provided 'from' and 'to' times using the provided random number generator.
+func RandomDateTime(rng *rand.Rand, from time.Time, to time.Time) time.Time {
+	if to.Before(from) {
+		from, to = to, from
 	}
-
-	return sb.String()
+	diff := to.Sub(from)
+	randomDuration := time.Duration(RandomIntegerBetween(rng, 0, diff.Nanoseconds()))
+	return from.Add(randomDuration)
 }
 
 // ShuffleString takes a string and returns a new string with the characters shuffled in random order using the provided random number generator.
