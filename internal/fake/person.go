@@ -1,0 +1,202 @@
+package fake
+
+import (
+	"fmt"
+	"kmock/internal/randexp"
+	"kmock/internal/randkit"
+	"math/rand/v2"
+)
+
+type Person struct {
+	Rng *rand.Rand
+}
+
+// Name generates a random full name for the specified locale using the provided random number generator.
+// It randomly decides whether to include a middle name based on a 30% chance.
+// It panics if the locale is not supported.
+func (p Person) Name(locale string) string {
+	if _, ok := availableLocales[locale]; !ok {
+		panic("locale not supported: " + locale)
+	}
+	if randkit.RandomBool(p.Rng, 0.3) {
+		return p.FirstName(locale) + " " + p.MiddleName(locale) + " " + p.LastName(locale)
+	}
+	return p.FirstName(locale) + " " + p.LastName(locale)
+}
+
+// FirstName generates a random first name for the specified locale using the provided random number generator.
+// It panics if the locale is not supported.
+func (p Person) FirstName(locale string) string {
+	if _, ok := availableLocales[locale]; !ok {
+		panic("locale not supported: " + locale)
+	}
+	return randkit.PickFromList(p.Rng, personFirstName[locale])
+}
+
+// MiddleName generates a random middle name for the specified locale using the provided random number generator.
+// It panics if the locale is not supported.
+func (p Person) MiddleName(locale string) string {
+	if _, ok := availableLocales[locale]; !ok {
+		panic("locale not supported: " + locale)
+	}
+	return randkit.PickFromList(p.Rng, personMiddleName[locale])
+}
+
+// LastName generates a random last name for the specified locale using the provided random number generator.
+// It panics if the locale is not supported.
+func (p Person) LastName(locale string) string {
+	if _, ok := availableLocales[locale]; !ok {
+		panic("locale not supported: " + locale)
+	}
+	return randkit.PickFromList(p.Rng, personLastName[locale])
+}
+
+// Phone generates a random phone number using the provided random number generator.
+func (p Person) Phone() string {
+	randomPhoneData := randkit.PickFromList(p.Rng, personPhone)
+	return "+" + randomPhoneData.countryCode + " " + randkit.PickFromList(p.Rng, randomPhoneData.format)
+}
+
+// Email generates a random email address using the provided random number generator.
+func (p Person) Email() string {
+	return p.Username() + "@" + randkit.PickFromList(p.Rng, personEmailDomain)
+}
+
+// Username generates a random username by combining a base username with a random suffix.
+func (p Person) Username() string {
+	sulfixTemplates := []string{
+		"^[a-zA-Z0-9]{3,16}$",
+		"^[a-zA-Z0-9](_(?!_)|-(?!-)|[a-zA-Z0-9]){1,18}[a-zA-Z0-9]$",
+		"^[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}$",
+	}
+	randExp, err := randexp.NewRandexpGenerator(randkit.PickFromList(p.Rng, sulfixTemplates))
+	if err != nil {
+		panic(err)
+	}
+	return randExp.Generate(p.Rng)
+}
+
+// Password generates a random password based on the specified strength level (weak, medium, strong) using the provided random number generator.
+// It panics if the strength level is not recognized.
+func (p Person) Password(strength string) string {
+	var template string
+	switch strength {
+	case "weak":
+		template = "[a-z]{8}"
+	case "medium":
+		template = "[a-zA-Z0-9]{8}"
+	case "strong":
+		template = "[a-zA-Z0-9!@#$%^&*()_+]{12}"
+	default:
+		template = "[a-zA-Z0-9!@#$%^&*()_+]{8,}"
+	}
+	randExp, err := randexp.NewRandexpGenerator(template)
+	if err != nil {
+		panic(err)
+	}
+	return randExp.Generate(p.Rng)
+}
+
+// JobTitle generates a random job title for the specified locale using the provided random number generator.
+// It panics if the locale is not supported.
+func (p Person) JobTitle(locale string) string {
+	if _, ok := availableLocales[locale]; !ok {
+		panic("locale not supported: " + locale)
+	}
+	return randkit.PickFromList(p.Rng, personJobTitle[locale])
+}
+
+// CPF generates a random CPF (Cadastro de Pessoas Físicas) number for a person using the provided random number generator.
+func (p Person) CPFValid() string {
+	cpf := make([]int, 9)
+	// Generate the first 9 digits
+	for i := range 9 {
+		cpf[i] = randkit.RandomIntegerBetween(p.Rng, 0, 9)
+	}
+	// Multipliers for checksum digits
+	multipliers1 := []int{10, 9, 8, 7, 6, 5, 4, 3, 2}
+	multipliers2 := []int{11, 10, 9, 8, 7, 6, 5, 4, 3, 2}
+	// Calculate the first checksum digit
+	cpf = append(cpf, cpfChecksum(cpf[:9], multipliers1))
+	// Calculate the second checksum digit
+	cpf = append(cpf, cpfChecksum(cpf[:10], multipliers2))
+	return fmt.Sprintf("%03d.%03d.%03d-%02d",
+		cpf[0]*100+cpf[1]*10+cpf[2],
+		cpf[3]*100+cpf[4]*10+cpf[5],
+		cpf[6]*100+cpf[7]*10+cpf[8],
+		cpf[9]*10+cpf[10],
+	)
+}
+
+// RuntimeDocs provides runtime documentation for the Person struct and its methods
+func (p Person) RuntimeDocs() *RunTimeDocs {
+	return &RunTimeDocs{
+		Struct: "Person",
+		Methods: map[string]RunTimeDocsMethod{
+			"Name": {
+				Name:        "Name",
+				Description: "Generates a random full name based on the specified locale",
+				Params:      []string{"locale"},
+			},
+			"FirstName": {
+				Name:        "FirstName",
+				Description: "Generates a random first name based on the specified locale",
+				Params:      []string{"locale"},
+			},
+			"MiddleName": {
+				Name:        "MiddleName",
+				Description: "Generates a random middle name based on the specified locale",
+				Params:      []string{"locale"},
+			},
+			"LastName": {
+				Name:        "LastName",
+				Description: "Generates a random last name based on the specified locale",
+				Params:      []string{"locale"},
+			},
+			"Phone": {
+				Name:        "Phone",
+				Description: "Generates a random phone number",
+				Params:      []string{},
+			},
+			"Email": {
+				Name:        "Email",
+				Description: "Generates a random email address",
+				Params:      []string{},
+			},
+			"Username": {
+				Name:        "Username",
+				Description: "Generates a random username",
+				Params:      []string{},
+			},
+			"Password": {
+				Name:        "Password",
+				Description: "Generates a random password based on the specified strength level (weak, medium, strong)",
+				Params:      []string{"strength"},
+			},
+			"JobTitle": {
+				Name:        "JobTitle",
+				Description: "Generates a random job title based on the specified locale",
+				Params:      []string{"locale"},
+			},
+			"CPFValid": {
+				Name:        "CPFValid",
+				Description: "Generates a random valid CPF number",
+				Params:      []string{},
+			},
+		},
+	}
+}
+
+// cpfChecksum calculates the check digit for a CPF number using the provided digits and multipliers.
+// It returns the calculated check digit.
+func cpfChecksum(digits []int, multipliers []int) int {
+	sum := 0
+	for i := range digits {
+		sum += digits[i] * multipliers[i]
+	}
+	checkDigit := (sum * 10) % 11
+	if checkDigit == 10 {
+		checkDigit = 0
+	}
+	return checkDigit
+}

@@ -13,12 +13,14 @@ const (
 	dateTimeDefaultFormat = "2006-01-02 15:04:05"
 )
 
-type Date struct{}
+type Date struct {
+	Rng *rand.Rand
+}
 
 // Date generates a random date between the provided 'from' and 'to' dates using the provided random number generator.
 // The 'from' and 'to' parameters are expected to be in the format "YYYY-MM-DD".
 // The 'format' parameter specifies the output format of the date.
-func (d Date) Date(rng *rand.Rand, from string, to string, format string) string {
+func (d Date) Date(from string, to string, format string) string {
 	if from == "" {
 		from = "1970-01-01"
 	}
@@ -38,14 +40,14 @@ func (d Date) Date(rng *rand.Rand, from string, to string, format string) string
 		return ""
 	}
 
-	randomDate := randkit.RandomDateTime(rng, fromTime, toTime)
+	randomDate := randkit.RandomDateTime(d.Rng, fromTime, toTime)
 	return randomDate.Format(parseFormat(format))
 }
 
 // Time generates a random time between the provided 'from' and 'to' times using the provided random number generator.
 // The 'from' and 'to' parameters are expected to be in the format "hh:mm:ss" (24-hour format).
 // The 'format' parameter specifies the output format of the time.
-func (d Date) Time(rng *rand.Rand, from string, to string, format string) string {
+func (d Date) Time(from string, to string, format string) string {
 	if from == "" {
 		from = "00:00:00"
 	}
@@ -65,14 +67,14 @@ func (d Date) Time(rng *rand.Rand, from string, to string, format string) string
 		return ""
 	}
 
-	randomTime := randkit.RandomDateTime(rng, fromTime, toTime)
+	randomTime := randkit.RandomDateTime(d.Rng, fromTime, toTime)
 	return randomTime.Format(parseFormat(format))
 }
 
 // DateTime generates a random date and time between the provided 'from' and 'to' date-times using the provided random number generator.
 // The 'from' and 'to' parameters are expected to be in the format "YYYY-MM-DD hh:mm:ss".
 // The 'format' parameter specifies the output format of the date and time.
-func (d Date) DateTime(rng *rand.Rand, from string, to string, format string) string {
+func (d Date) DateTime(from string, to string, format string) string {
 	if from == "" {
 		from = "1970-01-01 00:00:00"
 	}
@@ -92,12 +94,12 @@ func (d Date) DateTime(rng *rand.Rand, from string, to string, format string) st
 		return ""
 	}
 
-	randomDateTime := randkit.RandomDateTime(rng, fromTime, toTime)
+	randomDateTime := randkit.RandomDateTime(d.Rng, fromTime, toTime)
 	return randomDateTime.Format(parseFormat(format))
 }
 
 // Now generates the current date and time in the specified format. If no format is provided, it defaults to "YYYY-MM-DD hh:mm:ss".
-func (d Date) Now(rng *rand.Rand, format string) string {
+func (d Date) Now(format string) string {
 	if format == "" {
 		format = dateTimeDefaultFormat
 	}

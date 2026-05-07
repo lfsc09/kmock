@@ -548,3 +548,138 @@ var (
 		{"Cartes Bancaires", []string{"4", "5"}, []int{16}},
 	}
 )
+
+type personPhoneData struct {
+	countryCode string
+	format      []string
+}
+
+var (
+	personFirstName = map[string][]string{
+		"en-US": {
+			"James", "John", "Robert", "Michael", "William",
+			"David", "Richard", "Joseph", "Thomas", "Charles",
+			"Christopher", "Daniel", "Matthew", "Anthony", "Donald",
+			"Mary", "Patricia", "Jennifer", "Linda", "Barbara",
+			"Elizabeth", "Susan", "Jessica", "Sarah", "Karen",
+			"Lisa", "Nancy", "Betty", "Margaret", "Sandra",
+			"Ashley", "Emily", "Amanda", "Melissa", "Stephanie",
+		},
+		"pt-BR": {
+			"Miguel", "Arthur", "Heitor", "Davi", "Gabriel",
+			"Pedro", "Matheus", "Lucas", "Benjamim", "Nicolas",
+			"Guilherme", "Rafael", "Felipe", "João", "Leonardo",
+			"Sofia", "Alice", "Valentina", "Laura", "Isabella",
+			"Manuela", "Júlia", "Heloísa", "Luísa", "Maria",
+			"Beatriz", "Lara", "Ana", "Clara", "Lívia",
+			"Fernanda", "Carla", "Bruna", "Camila", "Mariana",
+		},
+	}
+
+	personMiddleName = map[string][]string{
+		"en-US": {
+			"Ray", "Jay", "Mae", "Ann", "Lynn",
+			"Dean", "Dale", "Wayne", "Gene", "Earl",
+			"Keith", "Scott", "Alan", "Todd", "Blair",
+			"Grace", "Marie", "Rose", "Jean", "Claire",
+			"Faith", "Hope", "Joy", "Dawn", "Faye",
+			"Nicole", "Renee", "Beth", "Gail", "Lane",
+			"Brooke", "Chase", "Drew", "Reid", "Paige",
+		},
+		"pt-BR": {
+			"Maria", "José", "João", "Ana", "Luís",
+			"Antônio", "Francisco", "Paulo", "Pedro", "Carlos",
+			"Luiza", "Rita", "Helena", "Graça", "Fátima",
+			"Aparecida", "Conceição", "Benedita", "Sebastião", "Augusto",
+			"Henrique", "Eduardo", "Renato", "Roberto", "Ricardo",
+			"Marcelo", "Maurício", "Cláudia", "Patrícia", "Letícia",
+			"Adriana", "Denise", "Vanessa", "Cristiane", "Viviane",
+		},
+	}
+
+	personLastName = map[string][]string{
+		"en-US": {
+			"Smith", "Johnson", "Williams", "Brown", "Jones",
+			"Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
+			"Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson",
+			"Thomas", "Taylor", "Moore", "Jackson", "Martin",
+			"Lee", "Perez", "Thompson", "White", "Harris",
+			"Sanchez", "Clark", "Ramirez", "Lewis", "Robinson",
+			"Walker", "Young", "Allen", "King", "Wright",
+		},
+		"pt-BR": {
+			"Silva", "Santos", "Oliveira", "Souza", "Rodrigues",
+			"Ferreira", "Alves", "Pereira", "Lima", "Gomes",
+			"Costa", "Ribeiro", "Martins", "Carvalho", "Almeida",
+			"Lopes", "Sousa", "Fernandes", "Vieira", "Barbosa",
+			"Rocha", "Dias", "Nascimento", "Andrade", "Moreira",
+			"Nunes", "Marques", "Machado", "Mendes", "Freitas",
+			"Cardoso", "Ramos", "Teixeira", "Araújo", "Campos",
+		},
+	}
+
+	personPhone = []personPhoneData{
+		{"1", []string{"201 ###-####", "212 ###-####", "310 ###-####", "415 ###-####", "312 ###-####"}},
+		{"55", []string{"11 #####-####", "21 #####-####", "31 #####-####", "11 ####-####", "21 ####-####"}},
+		{"44", []string{"20 #### ####", "113 ### ####", "131 ### ####", "7### ######"}},
+		{"49", []string{"30 ########", "89 ########", "211 ########", "160 ########"}},
+		{"33", []string{"1 ## ## ## ##", "4 ## ## ## ##", "6 ## ## ## ##", "7 ## ## ## ##"}},
+		{"39", []string{"02 ########", "06 ########", "3## #######"}},
+		{"34", []string{"91 ### ## ##", "93 ### ## ##", "6## ### ###"}},
+		{"7", []string{"495 ###-##-##", "812 ###-##-##", "9## ###-##-##"}},
+		{"86", []string{"10 #### ####", "21 #### ####", "139 #### ####", "186 #### ####"}},
+		{"81", []string{"3 #### ####", "6 #### ####", "90 #### ####", "80 #### ####"}},
+		{"82", []string{"2 #### ####", "10 #### ####", "10 #### ####"}},
+		{"91", []string{"11 #### ####", "22 #### ####", "98## ######"}},
+		{"52", []string{"55 #### ####", "33 #### ####", "1## ### ####"}},
+		{"54", []string{"11 ####-####", "351 ####-####", "9 #### ####"}},
+		{"56", []string{"2 #### ####", "9 #### ####"}},
+		{"57", []string{"1 ### ####", "310 ### ####", "300 ### ####"}},
+		{"61", []string{"2 #### ####", "4## ### ###", "4## ### ###"}},
+		{"64", []string{"9 ### ####", "3 ### ####", "4 ### ####"}},
+		{"27", []string{"11 ### ####", "21 ### ####", "8# ### ####"}},
+		{"234", []string{"803 ### ####", "806 ### ####", "813 ### ####"}},
+		{"20", []string{"2 #### ####", "10 #### ####", "100 ### ####"}},
+		{"92", []string{"21 #### ####", "300 ### ####", "301 ### ####"}},
+		{"62", []string{"21 #### ####", "22 #### ####", "81## ######"}},
+		{"63", []string{"2 ### ####", "917 ### ####", "918 ### ####"}},
+		{"66", []string{"2 ### ####", "8# ### ####", "9# ### ####"}},
+		{"84", []string{"24 #### ####", "28 #### ####", "9# #### ####"}},
+		{"90", []string{"212 ### ####", "312 ### ####", "5## ### ####"}},
+		{"380", []string{"44 ### ####", "63 ### ####", "67 ### ####"}},
+		{"48", []string{"22 ### ## ##", "12 ### ## ##", "5## ### ###"}},
+		{"351", []string{"21 ### ####", "22 ### ####", "9# ### ####"}},
+	}
+
+	personEmailDomain = []string{
+		"gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "icloud.com",
+		"protonmail.com", "live.com", "msn.com", "aol.com", "zoho.com",
+		"mail.com", "yandex.com", "gmx.com", "tutanota.com", "fastmail.com",
+		"inbox.com", "hushmail.com", "runbox.com", "mailfence.com", "posteo.net",
+		"uol.com.br", "bol.com.br", "ig.com.br", "terra.com.br", "globo.com",
+		"zipmail.com.br", "r7.com", "oi.com.br", "yahoo.com.br", "hotmail.com.br",
+		"web.de", "orange.fr", "free.fr", "laposte.net", "sfr.fr",
+		"libero.it", "virgilio.it", "tin.it", "seznam.cz", "wp.pl",
+	}
+
+	personJobTitle = map[string][]string{
+		"en-US": {
+			"Software Engineer", "Product Manager", "Data Scientist", "UX Designer", "DevOps Engineer",
+			"Marketing Manager", "Sales Representative", "Financial Analyst", "HR Manager", "Operations Manager",
+			"Chief Executive Officer", "Chief Technology Officer", "Chief Financial Officer", "Vice President", "Director",
+			"Project Manager", "Business Analyst", "Systems Administrator", "Network Engineer", "Security Analyst",
+			"Accountant", "Legal Counsel", "Customer Success Manager", "Content Strategist", "Brand Manager",
+			"Recruiter", "Data Engineer", "Machine Learning Engineer", "QA Engineer", "Technical Writer",
+			"Supply Chain Manager", "Procurement Specialist", "Research Scientist", "Graphic Designer", "Full Stack Developer",
+		},
+		"pt-BR": {
+			"Engenheiro de Software", "Gerente de Produto", "Cientista de Dados", "Designer UX", "Engenheiro DevOps",
+			"Gerente de Marketing", "Representante de Vendas", "Analista Financeiro", "Gerente de RH", "Gerente de Operações",
+			"Diretor Executivo", "Diretor de Tecnologia", "Diretor Financeiro", "Vice-Presidente", "Diretor Geral",
+			"Gerente de Projetos", "Analista de Negócios", "Administrador de Sistemas", "Engenheiro de Redes", "Analista de Segurança",
+			"Contador", "Assessor Jurídico", "Gerente de Sucesso do Cliente", "Estrategista de Conteúdo", "Gerente de Marca",
+			"Recrutador", "Engenheiro de Dados", "Engenheiro de Machine Learning", "Analista de QA", "Redator Técnico",
+			"Gerente da Cadeia de Suprimentos", "Especialista em Compras", "Pesquisador Científico", "Designer Gráfico", "Desenvolvedor Full Stack",
+		},
+	}
+)

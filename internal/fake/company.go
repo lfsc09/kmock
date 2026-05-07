@@ -6,68 +6,65 @@ import (
 	"math/rand/v2"
 )
 
-type Company struct{}
+type Company struct {
+	Rng *rand.Rand
+}
 
 // Name generates a random company name based on the specified locale.
 // It panics if the locale is not supported.
-func (c Company) Name(rng *rand.Rand, locale string) string {
+func (c Company) Name(locale string) string {
 	if _, ok := availableLocales[locale]; !ok {
 		panic("locale not supported: " + locale)
 	}
-	return randkit.PickFromList(rng, companyName[locale])
+	return randkit.PickFromList(c.Rng, companyName[locale])
 }
 
 // Dba generates a random "doing business as" (Nome fantasia) name for a company.
 // It panics if the locale is not supported.
-func (c Company) Dba(rng *rand.Rand, locale string) string {
+func (c Company) Dba(locale string) string {
 	if _, ok := availableLocales[locale]; !ok {
 		panic("locale not supported: " + locale)
 	}
-	return randkit.PickFromList(rng, companyDba[locale])
+	return randkit.PickFromList(c.Rng, companyDba[locale])
 }
 
 // Industry generates a random industry name for a company.
 // It panics if the locale is not supported.
-func (c Company) Industry(rng *rand.Rand, locale string) string {
+func (c Company) Industry(locale string) string {
 	if _, ok := availableLocales[locale]; !ok {
 		panic("locale not supported: " + locale)
 	}
-	return randkit.PickFromList(rng, companyIndustry[locale])
+	return randkit.PickFromList(c.Rng, companyIndustry[locale])
 }
 
 // Suffix generates a random company suffix (e.g., Inc., LLC, etc.).
 // It panics if the locale is not supported.
-func (c Company) Suffix(rng *rand.Rand, locale string) string {
+func (c Company) Suffix(locale string) string {
 	if _, ok := availableLocales[locale]; !ok {
 		panic("locale not supported: " + locale)
 	}
-	return randkit.PickFromList(rng, companySuffix[locale])
+	return randkit.PickFromList(c.Rng, companySuffix[locale])
 }
 
 // EIN generates a random Employer Identification Number (EIN) for a company.
-func (c Company) EIN(rng *rand.Rand) string {
-	return randkit.RandomStringTemplate(rng, "\\d\\d-\\d\\d\\d\\d\\d\\d\\d")
+func (c Company) EIN() string {
+	return randkit.RandomStringTemplate(c.Rng, "\\d\\d-\\d\\d\\d\\d\\d\\d\\d")
 }
 
 // CNPJLegacyValid generates a random valid legacy (00.000.000/0000-00) Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company.
-func (c Company) CNPJLegacyValid(rng *rand.Rand) string {
+func (c Company) CNPJLegacyValid() string {
 	cnpj := make([]int, 12)
-
 	// Generate the first 12 digits
 	for i := range 12 {
-		cnpj[i] = rng.IntN(10)
+		cnpj[i] = randkit.RandomIntegerBetween(c.Rng, 0, 9)
 	}
-
 	// Multipliers for checksum digits
 	multipliers1 := []int{5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2}
 	multipliers2 := []int{6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2}
-
 	// Calculate the first checksum digit
 	cnpj = append(cnpj[:12], cnpjChecksum(cnpj[:12], multipliers1))
-
 	// Calculate the second checksum digit
 	cnpj = append(cnpj[:13], cnpjChecksum(cnpj[:13], multipliers2))
-
 	return fmt.Sprintf("%02d.%03d.%03d/%04d-%02d",
 		cnpj[0]*10+cnpj[1],
 		cnpj[2]*100+cnpj[3]*10+cnpj[4],
@@ -78,18 +75,18 @@ func (c Company) CNPJLegacyValid(rng *rand.Rand) string {
 }
 
 // IE generates a random Brazilian IE (Inscrição Estadual) number for a company.
-func (c Company) IE(rng *rand.Rand) string {
+func (c Company) IE() string {
 	templates := []string{
 		"\\d\\d\\d.\\d\\d\\d.\\d\\d\\d.\\d\\d\\d",
 		"\\d\\d\\d.\\d\\d\\d.\\d\\d\\d",
 		"\\d\\d\\d/\\d\\d\\d\\d\\d\\d\\d",
 	}
-	return randkit.RandomStringTemplate(rng, randkit.PickFromList(rng, templates))
+	return randkit.RandomStringTemplate(c.Rng, randkit.PickFromList(c.Rng, templates))
 }
 
 // CNAE generates a random Brazilian CNAE (Classificação Nacional de Atividades Econômicas) code for a company.
-func (c Company) CNAE(rng *rand.Rand) string {
-	return randkit.RandomStringTemplate(rng, "\\d\\d\\d\\d-\\d/\\d\\d")
+func (c Company) CNAE() string {
+	return randkit.RandomStringTemplate(c.Rng, "\\d\\d\\d\\d-\\d/\\d\\d")
 }
 
 // RuntimeDocs provides runtime documentation for the Company struct and its methods

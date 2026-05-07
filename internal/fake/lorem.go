@@ -5,36 +5,38 @@ import (
 	"math/rand/v2"
 )
 
-type Lorem struct{}
+type Lorem struct {
+	Rng *rand.Rand
+}
 
 // Word generates a random word from a predefined list of words.
-func (l Lorem) Word(rng *rand.Rand) string {
-	return randkit.PickFromList(rng, loremWord)
+func (l Lorem) Word() string {
+	return randkit.PickFromList(l.Rng, loremWord)
 }
 
 // Sentence generates a random sentence with the specified number of words.
-func (l Lorem) Sentence(rng *rand.Rand, wordCount int) string {
+func (l Lorem) Sentence(wordCount int) string {
 	sb := randkit.GetStringBuilder()
 	defer randkit.PutStringBuilder(sb)
 	for i := 0; i < wordCount; i++ {
 		if i > 0 {
 			sb.WriteByte(' ')
 		}
-		sb.WriteString(l.Word(rng))
+		sb.WriteString(l.Word())
 	}
 	sb.WriteByte('.')
 	return sb.String()
 }
 
 // Paragraph generates a random paragraph with the specified number of sentences.
-func (l Lorem) Paragraph(rng *rand.Rand, sentenceCount int) string {
+func (l Lorem) Paragraph(sentenceCount int) string {
 	sb := randkit.GetStringBuilder()
 	defer randkit.PutStringBuilder(sb)
 	for i := 0; i < sentenceCount; i++ {
 		if i > 0 {
 			sb.WriteByte('\n')
 		}
-		sb.WriteString(l.Sentence(rng, randkit.RandomIntegerBetween(rng, 3, 15)))
+		sb.WriteString(l.Sentence(randkit.RandomIntegerBetween(l.Rng, 3, 15)))
 	}
 	return sb.String()
 }

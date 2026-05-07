@@ -5,16 +5,18 @@ import (
 	"math/rand/v2"
 )
 
-type Boolean struct{}
+type Boolean struct {
+	Rng *rand.Rand
+}
 
 // Random generates a random boolean value with a default probability of 0.5 (50% chance of being true).
-func (b Boolean) Random(rng *rand.Rand) bool {
-	return randkit.RandomBool(rng, 0.5)
+func (b Boolean) Random() bool {
+	return randkit.RandomBool(b.Rng, 0.5)
 }
 
 // RandomWithProbability generates a random boolean value with the specified probability of being true.
-func (b Boolean) RandomWithProbability(rng *rand.Rand, probability float64) bool {
-	return randkit.RandomBool(rng, probability)
+func (b Boolean) RandomWithProbability(probability float64) bool {
+	return randkit.RandomBool(b.Rng, probability)
 }
 
 // RuntimeDocs provides runtime documentation for the Boolean struct and its methods

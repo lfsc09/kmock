@@ -13,7 +13,6 @@ import (
 type MockBooleanTestSuite struct {
 	suite.Suite
 	seeds   []uint64
-	rng     *rand.Rand
 	boolean *Boolean
 }
 
@@ -23,8 +22,9 @@ func TestMockBooleanTestSuite(t *testing.T) {
 
 func (suite *MockBooleanTestSuite) SetupSuite() {
 	suite.seeds = []uint64{randkit.RandomSeed(), randkit.RandomSeed()}
-	suite.rng = rand.New(rand.NewPCG(suite.seeds[0], suite.seeds[1]))
-	suite.boolean = &Boolean{}
+	suite.boolean = &Boolean{
+		Rng: rand.New(rand.NewPCG(suite.seeds[0], suite.seeds[1])),
+	}
 }
 
 /*
@@ -32,12 +32,12 @@ func (suite *MockBooleanTestSuite) SetupSuite() {
 */
 
 func (suite *MockBooleanTestSuite) TestRandom() {
-	result := suite.boolean.Random(suite.rng)
+	result := suite.boolean.Random()
 	assert.IsType(suite.T(), true, result, fmt.Sprintf("Random should return a boolean value [seeds: %d, %d]", suite.seeds[0], suite.seeds[1]))
 }
 
 func (suite *MockBooleanTestSuite) TestRandomWithProbability() {
 	probability := 0.7
-	result := suite.boolean.RandomWithProbability(suite.rng, probability)
+	result := suite.boolean.RandomWithProbability(probability)
 	assert.IsType(suite.T(), true, result, fmt.Sprintf("RandomWithProbability should return a boolean value for probability: %f [seeds: %d, %d]", probability, suite.seeds[0], suite.seeds[1]))
 }

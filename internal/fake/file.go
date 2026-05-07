@@ -6,28 +6,30 @@ import (
 	"math/rand/v2"
 )
 
-type File struct{}
+type File struct {
+	Rng *rand.Rand
+}
 
 // Name generates a random file name with a prefix and a random integer, without an extension.
-func (f File) Name(rng *rand.Rand) string {
-	randomFileExtensionPrefix := randkit.PickFromList(rng, file).prefix
-	return fmt.Sprintf("%s-%d", randomFileExtensionPrefix, randkit.RandomIntegerBetween(rng, 1, 1_000_000))
+func (f File) Name() string {
+	randomFileExtensionPrefix := randkit.PickFromList(f.Rng, file).prefix
+	return fmt.Sprintf("%s-%d", randomFileExtensionPrefix, randkit.RandomIntegerBetween(f.Rng, 1, 1_000_000))
 }
 
 // Extension generates a random file extension from a predefined list of file extensions.
-func (f File) Extension(rng *rand.Rand) string {
-	return randkit.PickFromList(rng, file).ext
+func (f File) Extension() string {
+	return randkit.PickFromList(f.Rng, file).ext
 }
 
 // NameWithExtension generates a random file name with a prefix, a random integer, and an extension.
-func (f File) NameWithExtension(rng *rand.Rand) string {
-	randomFileExtension := randkit.PickFromList(rng, file)
-	return fmt.Sprintf("%s-%d.%s", randomFileExtension.prefix, randkit.RandomIntegerBetween(rng, 1, 1_000_000), randomFileExtension.ext)
+func (f File) NameWithExtension() string {
+	randomFileExtension := randkit.PickFromList(f.Rng, file)
+	return fmt.Sprintf("%s-%d.%s", randomFileExtension.prefix, randkit.RandomIntegerBetween(f.Rng, 1, 1_000_000), randomFileExtension.ext)
 }
 
 // MimeType generates a random MIME type based on a predefined list of file types and their associated MIME types.
-func (f File) MimeType(rng *rand.Rand) string {
-	return randkit.PickFromList(rng, file).mime
+func (f File) MimeType() string {
+	return randkit.PickFromList(f.Rng, file).mime
 }
 
 // RuntimeDocs provides runtime documentation for the Company struct and its methods
