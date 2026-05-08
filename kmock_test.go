@@ -241,3 +241,10 @@ func (suite *MockKmockTestSuite) TestKMockRegex() {
 	suite.NotEmpty(result, "Generate should not be empty for valid regex pattern")
 	suite.NotNil(km.Regex.RuntimeDocs(), "RuntimeDocs should not be nil")
 }
+
+func (suite *MockKmockTestSuite) TestKMockRuntimeDocs() {
+	km := New()
+	docs := km.RuntimeDocs()
+	suite.NotNil(docs, "RuntimeDocs should not be nil")
+	suite.NotEmpty(docs, "RuntimeDocs should not be empty")
+}

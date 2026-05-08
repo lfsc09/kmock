@@ -57,3 +57,23 @@ func New() *KMock {
 		Regex:    &fake.Regex{Rng: rng},
 	}
 }
+
+// RuntimeDocs returns a slice of pointers to RunTimeDocs for all the categories in KMock, allowing access to documentation for each category's functions.
+func (k KMock) RuntimeDocs() []*fake.RunTimeDocs {
+	docs := make([]*fake.RunTimeDocs, 0)
+	docs = append(docs, k.Address.RuntimeDocs()...)
+	docs = append(docs, k.Boolean.RuntimeDocs()...)
+	docs = append(docs, k.Car.RuntimeDocs()...)
+	docs = append(docs, k.Company.RuntimeDocs()...)
+	docs = append(docs, k.Currency.RuntimeDocs()...)
+	docs = append(docs, k.Date.RuntimeDocs()...)
+	docs = append(docs, k.File.RuntimeDocs()...)
+	docs = append(docs, k.Finance.RuntimeDocs()...)
+	docs = append(docs, k.ID.RuntimeDocs()...)
+	docs = append(docs, k.Internet.RuntimeDocs()...)
+	docs = append(docs, k.Lorem.RuntimeDocs()...)
+	docs = append(docs, k.Number.RuntimeDocs()...)
+	docs = append(docs, k.Person.RuntimeDocs()...)
+	docs = append(docs, k.Regex.RuntimeDocs()...)
+	return docs
+}
