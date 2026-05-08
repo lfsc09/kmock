@@ -1,8 +1,13 @@
 package fake
 
+const (
+	EN_US = "en-US"
+	PT_BR = "pt-BR"
+)
+
 var availableLocales = map[string]struct{}{
-	"en-US": {},
-	"pt-BR": {},
+	EN_US: {},
+	PT_BR: {},
 }
 
 type countryData struct {
@@ -40,13 +45,13 @@ var (
 	}
 
 	state = map[string][]stateData{
-		"en-US": {
+		EN_US: {
 			{"Alabama", "AL"}, {"Alaska", "AK"}, {"Arizona", "AZ"}, {"Arkansas", "AR"}, {"California", "CA"},
 			{"Colorado", "CO"}, {"Connecticut", "CT"}, {"Delaware", "DE"}, {"Florida", "FL"}, {"Georgia", "GA"},
 			{"Hawaii", "HI"}, {"Idaho", "ID"}, {"Illinois", "IL"}, {"Indiana", "IN"}, {"Iowa", "IA"},
 			{"Kansas", "KS"}, {"Kentucky", "KY"}, {"Louisiana", "LA"}, {"Maine", "ME"}, {"Maryland", "MD"},
 		},
-		"pt-BR": {
+		PT_BR: {
 			{"Acre", "AC"}, {"Alagoas", "AL"}, {"Amapá", "AP"}, {"Amazonas", "AM"}, {"Bahia", "BA"},
 			{"Ceará", "CE"}, {"Distrito Federal", "DF"}, {"Espírito Santo", "ES"}, {"Goiás", "GO"}, {"Maranhão", "MA"},
 			{"Mato Grosso", "MT"}, {"Mato Grosso do Sul", "MS"}, {"Minas Gerais", "MG"}, {"Pará", "PA"}, {"Paraíba", "PB"},
@@ -55,7 +60,7 @@ var (
 	}
 
 	city = map[string]map[string][]string{
-		"en-US": {
+		EN_US: {
 			"AL": {"Birmingham", "Montgomery", "Huntsville", "Mobile", "Tuscaloosa", "Hoover", "Dothan", "Auburn", "Decatur", "Madison"},
 			"AK": {"Anchorage", "Fairbanks", "Juneau", "Sitka", "Ketchikan", "Wasilla", "Kenai", "Kodiak", "Bethel", "Palmer"},
 			"AZ": {"Phoenix", "Tucson", "Mesa", "Chandler", "Scottsdale", "Glendale", "Gilbert", "Tempe", "Peoria", "Surprise"},
@@ -77,7 +82,7 @@ var (
 			"ME": {"Portland", "Lewiston", "Bangor", "South Portland", "Auburn", "Biddeford", "Sanford", "Augusta", "Saco", "Westbrook"},
 			"MD": {"Baltimore", "Frederick", "Rockville", "Gaithersburg", "Bowie", "Hagerstown", "Annapolis", "College Park", "Salisbury", "Laurel"},
 		},
-		"pt-BR": {
+		PT_BR: {
 			"AC": {"Rio Branco", "Cruzeiro do Sul", "Sena Madureira", "Tarauacá", "Feijó", "Brasiléia", "Epitaciolândia", "Juruá", "Mâncio Lima", "Plácido de Castro"},
 			"AL": {"Maceió", "Arapiraca", "Palmeira dos Índios", "Rio Largo", "Penedo", "União dos Palmares", "São Miguel dos Campos", "Coruripe", "Delmiro Gouveia", "Marechal Deodoro"},
 			"AP": {"Macapá", "Santana", "Laranjal do Jari", "Oiapoque", "Mazagão", "Porto Grande", "Tartarugalzinho", "Pedra Branca do Amapari", "Calçoene", "Ferreira Gomes"},
@@ -102,7 +107,7 @@ var (
 	}
 
 	neighborhood = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"Downtown", "Midtown", "Uptown", "East Side", "West Side",
 			"North End", "South End", "Chinatown", "Little Italy", "Financial District",
 			"Arts District", "Historic District", "Old Town", "Riverside", "Lakeside",
@@ -114,7 +119,7 @@ var (
 			"Westview", "Eastview", "Northview", "Southgate", "Northgate",
 			"Westgate", "Eastgate", "Millbrook", "Stonegate", "Harborview",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Centro", "Bairro Alto", "Vila Nova", "Jardim América", "Boa Vista",
 			"Pinheiros", "Lapa", "Consolação", "Liberdade", "Bela Vista",
 			"Campos Elíseos", "Santa Cecília", "Bom Retiro", "Brás", "Mooca",
@@ -129,7 +134,7 @@ var (
 	}
 
 	streetName = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"Main Street", "Oak Avenue", "Maple Street", "Cedar Lane", "Pine Street",
 			"Elm Street", "Washington Boulevard", "Park Avenue", "Sunset Drive", "Riverside Road",
 			"Highland Avenue", "Lakeview Drive", "Forest Road", "Hill Street", "Valley Road",
@@ -141,7 +146,7 @@ var (
 			"Northgate Boulevard", "Southgate Drive", "Westview Lane", "Eastview Road", "Clearwater Drive",
 			"Pinehurst Circle", "Oakwood Trail", "Elmwood Place", "Maplewood Court", "Cedarwood Way",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Rua das Flores", "Avenida Brasil", "Rua São João", "Avenida Paulista", "Rua da Paz",
 			"Rua XV de Novembro", "Avenida Rio Branco", "Rua Tiradentes", "Rua da Liberdade", "Avenida Atlântica",
 			"Rua das Palmeiras", "Avenida das Américas", "Rua do Comércio", "Avenida Central", "Rua Nova",
@@ -202,7 +207,7 @@ var (
 
 var (
 	companyName = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"Apex Solutions", "Blue Ridge Technologies", "Cascade Ventures", "Delta Dynamics", "Evergreen Enterprises",
 			"Falcon Industries", "Gateway Group", "Harbor Holdings", "Ironclad Systems", "Juniper Partners",
 			"Keystone Capital", "Lighthouse Labs", "Meridian Corp", "Nexus Networks", "Orion Consulting",
@@ -212,7 +217,7 @@ var (
 			"Granite Peak Corp", "Highpoint Solutions", "Ironwood Enterprises", "Jasper Technologies", "Kestrel Group",
 			"Lakeview Partners", "Maple Grove Inc", "Northstar Ventures", "Oakdale Industries", "Pacific Ridge Corp",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Ápice Soluções", "Bravo Tecnologia", "Caminho Digital", "Delta Sistemas", "Estrela Ventures",
 			"Falcão Indústrias", "Gávea Participações", "Horizonte Holdings", "Inova Sistemas", "Jatobá Parceiros",
 			"Kinect Capital", "Luminar Labs", "Meridiano Corp", "Nexus Redes", "Orion Consultoria",
@@ -225,7 +230,7 @@ var (
 	}
 
 	companyDba = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"Apex Pro", "Blue Tech", "CascadeX", "DeltaNet", "EverGreen Co",
 			"FalconTech", "GateGroup", "HarborHub", "IronSys", "JuniperPro",
 			"KeyCap", "LightLabs", "MeriCorp", "NexNet", "OrionCo",
@@ -235,7 +240,7 @@ var (
 			"GranitePeak", "HighSol", "IronEnter", "JasperTech", "KestrelGrp",
 			"LakePartners", "MapleGrove", "NorthVentures", "OakIndustries", "PacificRidge",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Ápice Pro", "BlueTech BR", "CaminhoX", "DeltaNet BR", "EstrelaCo",
 			"FalcãoTech", "GáveaGrupo", "HorizonteHub", "InovaSys", "JatobáPro",
 			"KinectCap", "LuminarLabs", "MeriCorp BR", "NexRedes", "OrionBR",
@@ -248,13 +253,13 @@ var (
 	}
 
 	companyIndustry = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"Technology", "Healthcare", "Finance", "Education", "Retail",
 			"Manufacturing", "Transportation", "Energy", "Real Estate", "Agriculture",
 			"Entertainment", "Hospitality", "Construction", "Telecommunications", "Pharmaceuticals",
 			"Automotive", "Aerospace", "Food & Beverage", "Media", "Logistics",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Tecnologia", "Saúde", "Finanças", "Educação", "Varejo",
 			"Manufatura", "Transporte", "Energia", "Imóveis", "Agronegócio",
 			"Entretenimento", "Hotelaria", "Construção Civil", "Telecomunicações", "Farmacêutica",
@@ -263,11 +268,11 @@ var (
 	}
 
 	companySuffix = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"Inc.", "LLC", "Ltd.", "Corp.", "Co.",
 			"Group", "Associates", "Partners", "Holdings", "Enterprises",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Ltda.", "S.A.", "EIRELI", "MEI", "S/S",
 			"EPP", "ME", "S.C.", "COOP",
 		},
@@ -556,7 +561,7 @@ type personPhoneData struct {
 
 var (
 	personFirstName = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"James", "John", "Robert", "Michael", "William",
 			"David", "Richard", "Joseph", "Thomas", "Charles",
 			"Christopher", "Daniel", "Matthew", "Anthony", "Donald",
@@ -565,7 +570,7 @@ var (
 			"Lisa", "Nancy", "Betty", "Margaret", "Sandra",
 			"Ashley", "Emily", "Amanda", "Melissa", "Stephanie",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Miguel", "Arthur", "Heitor", "Davi", "Gabriel",
 			"Pedro", "Matheus", "Lucas", "Benjamim", "Nicolas",
 			"Guilherme", "Rafael", "Felipe", "João", "Leonardo",
@@ -577,7 +582,7 @@ var (
 	}
 
 	personMiddleName = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"Ray", "Jay", "Mae", "Ann", "Lynn",
 			"Dean", "Dale", "Wayne", "Gene", "Earl",
 			"Keith", "Scott", "Alan", "Todd", "Blair",
@@ -586,7 +591,7 @@ var (
 			"Nicole", "Renee", "Beth", "Gail", "Lane",
 			"Brooke", "Chase", "Drew", "Reid", "Paige",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Maria", "José", "João", "Ana", "Luís",
 			"Antônio", "Francisco", "Paulo", "Pedro", "Carlos",
 			"Luiza", "Rita", "Helena", "Graça", "Fátima",
@@ -598,7 +603,7 @@ var (
 	}
 
 	personLastName = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"Smith", "Johnson", "Williams", "Brown", "Jones",
 			"Garcia", "Miller", "Davis", "Rodriguez", "Martinez",
 			"Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson",
@@ -607,7 +612,7 @@ var (
 			"Sanchez", "Clark", "Ramirez", "Lewis", "Robinson",
 			"Walker", "Young", "Allen", "King", "Wright",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Silva", "Santos", "Oliveira", "Souza", "Rodrigues",
 			"Ferreira", "Alves", "Pereira", "Lima", "Gomes",
 			"Costa", "Ribeiro", "Martins", "Carvalho", "Almeida",
@@ -663,7 +668,7 @@ var (
 	}
 
 	personJobTitle = map[string][]string{
-		"en-US": {
+		EN_US: {
 			"Software Engineer", "Product Manager", "Data Scientist", "UX Designer", "DevOps Engineer",
 			"Marketing Manager", "Sales Representative", "Financial Analyst", "HR Manager", "Operations Manager",
 			"Chief Executive Officer", "Chief Technology Officer", "Chief Financial Officer", "Vice President", "Director",
@@ -672,7 +677,7 @@ var (
 			"Recruiter", "Data Engineer", "Machine Learning Engineer", "QA Engineer", "Technical Writer",
 			"Supply Chain Manager", "Procurement Specialist", "Research Scientist", "Graphic Designer", "Full Stack Developer",
 		},
-		"pt-BR": {
+		PT_BR: {
 			"Engenheiro de Software", "Gerente de Produto", "Cientista de Dados", "Designer UX", "Engenheiro DevOps",
 			"Gerente de Marketing", "Representante de Vendas", "Analista Financeiro", "Gerente de RH", "Gerente de Operações",
 			"Diretor Executivo", "Diretor de Tecnologia", "Diretor Financeiro", "Vice-Presidente", "Diretor Geral",

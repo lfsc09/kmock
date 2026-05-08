@@ -2,9 +2,10 @@ package fake
 
 import (
 	"fmt"
-	"kmock/internal/randkit"
 	"math/rand/v2"
 	"testing"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"

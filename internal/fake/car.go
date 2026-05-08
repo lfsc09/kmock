@@ -1,8 +1,10 @@
 package fake
 
 import (
-	"kmock/internal/randkit"
+	"fmt"
 	"math/rand/v2"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 )
 
 type Car struct {
@@ -21,16 +23,16 @@ func (c Car) Model() string {
 }
 
 // LicensePlate generates a random license plate based on the specified locale.
-// It panics if the locale is not supported.
-func (c Car) LicensePlate(locale string) string {
+// It returns an error if the locale is not supported.
+func (c Car) LicensePlate(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
 	templates := map[string][]string{
 		"en-US": {"\\L\\L\\L-\\d\\d\\d\\d", "\\L\\L\\L-\\A\\A\\A", "\\l\\L\\L\\L\\l\\l\\l"},
 		"pt-BR": {"\\L\\L\\L-\\d\\d\\d\\d", "\\L\\L\\L-\\d\\L\\d\\d"},
 	}
-	return randkit.RandomStringTemplate(c.Rng, randkit.PickFromList(c.Rng, templates[locale]))
+	return randkit.RandomStringTemplate(c.Rng, randkit.PickFromList(c.Rng, templates[locale])), nil
 }
 
 // Color generates a random car color from a predefined list of colors.

@@ -2,9 +2,10 @@ package fake
 
 import (
 	"fmt"
-	"kmock/internal/randkit"
 	"math/rand/v2"
 	"testing"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -33,9 +34,8 @@ func (suite *MockCarTestSuite) SetupSuite() {
 */
 
 func (suite *MockCarTestSuite) TestLicensePlateWithUnsupportedLocale() {
-	assert.Panics(suite.T(), func() {
-		suite.car.LicensePlate("unsupported-locale")
-	}, fmt.Sprintf("LicensePlate should panic when an unsupported locale is provided [seeds: %d, %d]", suite.seeds[0], suite.seeds[1]))
+	_, err := suite.car.LicensePlate("unsupported-locale")
+	assert.Error(suite.T(), err, fmt.Sprintf("LicensePlate should return an error when an unsupported locale is provided [seeds: %d, %d]", suite.seeds[0], suite.seeds[1]))
 }
 
 /*
@@ -54,7 +54,8 @@ func (suite *MockCarTestSuite) TestModel() {
 
 func (suite *MockCarTestSuite) TestLicensePlate() {
 	for locale := range availableLocales {
-		licensePlate := suite.car.LicensePlate(locale)
+		licensePlate, err := suite.car.LicensePlate(locale)
+		assert.NoError(suite.T(), err, fmt.Sprintf("LicensePlate should not return an error for locale: %s [seeds: %d, %d]", locale, suite.seeds[0], suite.seeds[1]))
 		assert.NotEmpty(suite.T(), licensePlate, fmt.Sprintf("LicensePlate should return a non-empty string for locale: %s [seeds: %d, %d]", locale, suite.seeds[0], suite.seeds[1]))
 	}
 }

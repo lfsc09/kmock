@@ -2,9 +2,10 @@ package fake
 
 import (
 	"fmt"
-	"kmock/internal/randkit"
 	"math/rand/v2"
 	"strings"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 )
 
 type Finance struct {
@@ -19,13 +20,11 @@ func (f Finance) CreditCardNumber() string {
 	randomVendor := randkit.PickFromList(f.Rng, creditCardVendor)
 	randomVendorBin := randkit.PickFromList(f.Rng, randomVendor.bin)
 	randomVendorLength := randkit.PickFromList(f.Rng, randomVendor.length)
-
 	// Generate the credit card number with the correct length and prefix
 	ccNumber := randomVendorBin
 	for len(ccNumber) < randomVendorLength-1 {
 		ccNumber += string(rune('0' + randkit.RandomIntegerBetween(f.Rng, 0, 9)))
 	}
-
 	// Calculate the checksum digit using the Luhn algorithm
 	checksumDigit := luhnChecksum(ccNumber)
 	return ccNumber + string(rune('0'+checksumDigit))
@@ -44,31 +43,39 @@ func (f Finance) CreditCardExpirationDate() string {
 }
 
 // CreditCardHolder generates a random credit card holder name using the provided random number generator.
-// It panics if the locale is not supported.
-func (f Finance) CreditCardHolder(locale string) string {
+// It returns an error if the locale is not supported.
+func (f Finance) CreditCardHolder(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
 	var middleNameInitial string
 	if randkit.RandomBool(f.Rng, 0.3) {
-		middleNameInitial = string(Person{}.MiddleName(locale)[0]) + "."
+		middleName, err := Person{Rng: f.Rng}.MiddleName(locale)
+		if err != nil {
+			return "", err
+		}
+		// Use only the first letter
+		middleNameInitial = string(middleName[0]) + "."
 	}
-	personFirstName := Person{}.FirstName(locale)
-	personLastName := Person{}.LastName(locale)
+	personFirstName, err := Person{Rng: f.Rng}.FirstName(locale)
+	if err != nil {
+		return "", err
+	}
+	personLastName, err := Person{Rng: f.Rng}.LastName(locale)
+	if err != nil {
+		return "", err
+	}
+	var personName string
+	if middleNameInitial != "" {
+		personName = fmt.Sprintf("%s %s %s", personFirstName, middleNameInitial, personLastName)
+	} else {
+		personName = fmt.Sprintf("%s %s", personFirstName, personLastName)
+	}
 	// Ensure the credit card holder name does not exceed 26 characters (common limit for credit card names)
-	personName := fmt.Sprintf("%s %s %s", personFirstName, middleNameInitial, personLastName)
 	if len(personName) > 26 {
-		// Check if middle name initial is present
-		if middleNameInitial != "" {
-			// Remove middle name initial to fit within the limit
-			personName = fmt.Sprintf("%s %s", personFirstName, personLastName)
-		}
-		// Truncate the name if it still exceeds the limit
-		if len(personName) > 26 {
-			personName = personName[:26]
-		}
+		personName = personName[:26]
 	}
-	return strings.ToUpper(personName)
+	return strings.ToUpper(personName), nil
 }
 
 // RuntimeDocs provides runtime documentation for the Finance struct and its methods
@@ -109,21 +116,17 @@ func (f Finance) RuntimeDocs() *RunTimeDocs {
 func luhnChecksum(number string) int {
 	sum := 0
 	double := false
-
 	// Process digits from right to left
 	for i := len(number) - 1; i >= 0; i-- {
 		digit := int(number[i] - '0')
-
 		if double {
 			digit *= 2
 			if digit > 9 {
 				digit -= 9
 			}
 		}
-
 		sum += digit
 		double = !double
 	}
-
 	return sum % 10
 }

@@ -2,8 +2,9 @@ package fake
 
 import (
 	"fmt"
-	"kmock/internal/randkit"
 	"math/rand/v2"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 )
 
 type File struct {
@@ -32,7 +33,7 @@ func (f File) MimeType() string {
 	return randkit.PickFromList(f.Rng, file).mime
 }
 
-// RuntimeDocs provides runtime documentation for the Company struct and its methods
+// RuntimeDocs provides runtime documentation for the File struct and its methods
 func (f File) RuntimeDocs() *RunTimeDocs {
 	return &RunTimeDocs{
 		Struct: "File",

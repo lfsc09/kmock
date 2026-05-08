@@ -2,8 +2,9 @@ package fake
 
 import (
 	"fmt"
-	"kmock/internal/randkit"
 	"math/rand/v2"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 )
 
 type Company struct {
@@ -11,39 +12,39 @@ type Company struct {
 }
 
 // Name generates a random company name based on the specified locale.
-// It panics if the locale is not supported.
-func (c Company) Name(locale string) string {
+// It returns an error if the locale is not supported.
+func (c Company) Name(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
-	return randkit.PickFromList(c.Rng, companyName[locale])
+	return randkit.PickFromList(c.Rng, companyName[locale]), nil
 }
 
 // Dba generates a random "doing business as" (Nome fantasia) name for a company.
-// It panics if the locale is not supported.
-func (c Company) Dba(locale string) string {
+// It returns an error if the locale is not supported.
+func (c Company) Dba(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
-	return randkit.PickFromList(c.Rng, companyDba[locale])
+	return randkit.PickFromList(c.Rng, companyDba[locale]), nil
 }
 
 // Industry generates a random industry name for a company.
-// It panics if the locale is not supported.
-func (c Company) Industry(locale string) string {
+// It returns an error if the locale is not supported.
+func (c Company) Industry(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
-	return randkit.PickFromList(c.Rng, companyIndustry[locale])
+	return randkit.PickFromList(c.Rng, companyIndustry[locale]), nil
 }
 
 // Suffix generates a random company suffix (e.g., Inc., LLC, etc.).
-// It panics if the locale is not supported.
-func (c Company) Suffix(locale string) string {
+// It returns an error if the locale is not supported.
+func (c Company) Suffix(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
-	return randkit.PickFromList(c.Rng, companySuffix[locale])
+	return randkit.PickFromList(c.Rng, companySuffix[locale]), nil
 }
 
 // EIN generates a random Employer Identification Number (EIN) for a company.

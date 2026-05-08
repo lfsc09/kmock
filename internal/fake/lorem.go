@@ -1,8 +1,9 @@
 package fake
 
 import (
-	"kmock/internal/randkit"
 	"math/rand/v2"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 )
 
 type Lorem struct {
@@ -15,10 +16,14 @@ func (l Lorem) Word() string {
 }
 
 // Sentence generates a random sentence with the specified number of words.
+// If the word count is less than or equal to 0, it generates a sentence with a random number of words between 5 and 25.
 func (l Lorem) Sentence(wordCount int) string {
+	if wordCount <= 0 {
+		wordCount = randkit.RandomIntegerBetween(l.Rng, 5, 25)
+	}
 	sb := randkit.GetStringBuilder()
 	defer randkit.PutStringBuilder(sb)
-	for i := 0; i < wordCount; i++ {
+	for i := range wordCount {
 		if i > 0 {
 			sb.WriteByte(' ')
 		}
@@ -29,14 +34,18 @@ func (l Lorem) Sentence(wordCount int) string {
 }
 
 // Paragraph generates a random paragraph with the specified number of sentences.
+// If the sentence count is less than or equal to 0, it generates a paragraph of 1 sentence.
 func (l Lorem) Paragraph(sentenceCount int) string {
+	if sentenceCount <= 0 {
+		sentenceCount = 1
+	}
 	sb := randkit.GetStringBuilder()
 	defer randkit.PutStringBuilder(sb)
-	for i := 0; i < sentenceCount; i++ {
+	for i := range sentenceCount {
 		if i > 0 {
 			sb.WriteByte('\n')
 		}
-		sb.WriteString(l.Sentence(randkit.RandomIntegerBetween(l.Rng, 3, 15)))
+		sb.WriteString(l.Sentence(0))
 	}
 	return sb.String()
 }

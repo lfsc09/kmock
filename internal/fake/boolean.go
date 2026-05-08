@@ -1,8 +1,9 @@
 package fake
 
 import (
-	"kmock/internal/randkit"
 	"math/rand/v2"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 )
 
 type Boolean struct {

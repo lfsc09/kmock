@@ -1,8 +1,9 @@
 package fake
 
 import (
-	"kmock/internal/randkit"
 	"math/rand/v2"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 )
 
 type Number struct {
@@ -16,12 +17,6 @@ func (n Number) Int() int {
 
 // IntBetween generates a random integer between min and max (inclusive) using the provided random number generator.
 func (n Number) IntBetween(min, max int) int {
-	if min > max {
-		min, max = max, min
-	}
-	if min == max {
-		return min
-	}
 	return randkit.RandomIntegerBetween(n.Rng, min, max)
 }
 

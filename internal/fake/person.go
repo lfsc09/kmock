@@ -2,9 +2,10 @@ package fake
 
 import (
 	"fmt"
-	"kmock/internal/randexp"
-	"kmock/internal/randkit"
 	"math/rand/v2"
+
+	"github.com/lfsc09/kmock/internal/randexp"
+	"github.com/lfsc09/kmock/internal/randkit"
 )
 
 type Person struct {
@@ -13,42 +14,62 @@ type Person struct {
 
 // Name generates a random full name for the specified locale using the provided random number generator.
 // It randomly decides whether to include a middle name based on a 30% chance.
-// It panics if the locale is not supported.
-func (p Person) Name(locale string) string {
+// It returns an error if the locale is not supported.
+func (p Person) Name(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
 	if randkit.RandomBool(p.Rng, 0.3) {
-		return p.FirstName(locale) + " " + p.MiddleName(locale) + " " + p.LastName(locale)
+		firstName, err := p.FirstName(locale)
+		if err != nil {
+			return "", err
+		}
+		middleName, err := p.MiddleName(locale)
+		if err != nil {
+			return "", err
+		}
+		lastName, err := p.LastName(locale)
+		if err != nil {
+			return "", err
+		}
+		return firstName + " " + middleName + " " + lastName, nil
 	}
-	return p.FirstName(locale) + " " + p.LastName(locale)
+	firstName, err := p.FirstName(locale)
+	if err != nil {
+		return "", err
+	}
+	lastName, err := p.LastName(locale)
+	if err != nil {
+		return "", err
+	}
+	return firstName + " " + lastName, nil
 }
 
 // FirstName generates a random first name for the specified locale using the provided random number generator.
-// It panics if the locale is not supported.
-func (p Person) FirstName(locale string) string {
+// It returns an error if the locale is not supported.
+func (p Person) FirstName(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
-	return randkit.PickFromList(p.Rng, personFirstName[locale])
+	return randkit.PickFromList(p.Rng, personFirstName[locale]), nil
 }
 
 // MiddleName generates a random middle name for the specified locale using the provided random number generator.
-// It panics if the locale is not supported.
-func (p Person) MiddleName(locale string) string {
+// It returns an error if the locale is not supported.
+func (p Person) MiddleName(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
-	return randkit.PickFromList(p.Rng, personMiddleName[locale])
+	return randkit.PickFromList(p.Rng, personMiddleName[locale]), nil
 }
 
 // LastName generates a random last name for the specified locale using the provided random number generator.
-// It panics if the locale is not supported.
-func (p Person) LastName(locale string) string {
+// It returns an error if the locale is not supported.
+func (p Person) LastName(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
-	return randkit.PickFromList(p.Rng, personLastName[locale])
+	return randkit.PickFromList(p.Rng, personLastName[locale]), nil
 }
 
 // Phone generates a random phone number using the provided random number generator.
@@ -58,27 +79,33 @@ func (p Person) Phone() string {
 }
 
 // Email generates a random email address using the provided random number generator.
-func (p Person) Email() string {
-	return p.Username() + "@" + randkit.PickFromList(p.Rng, personEmailDomain)
+// It returns an error if the Username method fails to generate a username.
+func (p Person) Email() (string, error) {
+	username, err := p.Username()
+	if err != nil {
+		return "", err
+	}
+	return username + "@" + randkit.PickFromList(p.Rng, personEmailDomain), nil
 }
 
 // Username generates a random username by combining a base username with a random suffix.
-func (p Person) Username() string {
+// It returns an error if randexp fails to create its generator.
+func (p Person) Username() (string, error) {
 	sulfixTemplates := []string{
-		"^[a-zA-Z0-9]{3,16}$",
-		"^[a-zA-Z0-9](_(?!_)|-(?!-)|[a-zA-Z0-9]){1,18}[a-zA-Z0-9]$",
-		"^[a-z\\d](?:[a-z\\d]|-(?=[a-z\\d])){0,38}$",
+		"[a-zA-Z0-9]{3,16}",
+		"[a-zA-Z0-9][a-zA-Z0-9_-]{1,18}[a-zA-Z0-9]",
+		"[a-z0-9][a-z0-9-]{0,38}",
 	}
 	randExp, err := randexp.NewRandexpGenerator(randkit.PickFromList(p.Rng, sulfixTemplates))
 	if err != nil {
-		panic(err)
+		return "", fmt.Errorf("%w", err)
 	}
-	return randExp.Generate(p.Rng)
+	return randExp.Generate(p.Rng), nil
 }
 
 // Password generates a random password based on the specified strength level (weak, medium, strong) using the provided random number generator.
-// It panics if the strength level is not recognized.
-func (p Person) Password(strength string) string {
+// It returns an error if randexp fails to create its generator.
+func (p Person) Password(strength string) (string, error) {
 	var template string
 	switch strength {
 	case "weak":
@@ -92,18 +119,18 @@ func (p Person) Password(strength string) string {
 	}
 	randExp, err := randexp.NewRandexpGenerator(template)
 	if err != nil {
-		panic(err)
+		return "", fmt.Errorf("%w", err)
 	}
-	return randExp.Generate(p.Rng)
+	return randExp.Generate(p.Rng), nil
 }
 
 // JobTitle generates a random job title for the specified locale using the provided random number generator.
-// It panics if the locale is not supported.
-func (p Person) JobTitle(locale string) string {
+// It returns an error if the locale is not supported.
+func (p Person) JobTitle(locale string) (string, error) {
 	if _, ok := availableLocales[locale]; !ok {
-		panic("locale not supported: " + locale)
+		return "", fmt.Errorf("%w: %s", ErrLocaleNotSupported, locale)
 	}
-	return randkit.PickFromList(p.Rng, personJobTitle[locale])
+	return randkit.PickFromList(p.Rng, personJobTitle[locale]), nil
 }
 
 // CPF generates a random CPF (Cadastro de Pessoas Físicas) number for a person using the provided random number generator.

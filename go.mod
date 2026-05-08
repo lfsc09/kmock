@@ -1,4 +1,4 @@
-module kmock
+module github.com/lfsc09/kmock
 
 go 1.26.1
 

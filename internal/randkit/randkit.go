@@ -78,7 +78,7 @@ func RandomIntegerBetween[T int | int32 | int64 | uint | uint32 | uint64](rng *r
 	if min == max {
 		return min
 	}
-	switch any(min).(type) {
+	switch any(T(0)).(type) {
 	case int:
 		return T(rng.Int()%(int(max)-int(min)+1) + int(min))
 	case int32:
@@ -91,9 +91,8 @@ func RandomIntegerBetween[T int | int32 | int64 | uint | uint32 | uint64](rng *r
 		return T(rng.Uint32()%(uint32(max)-uint32(min)+1) + uint32(min))
 	case uint64:
 		return T(rng.Uint64()%(uint64(max)-uint64(min)+1) + uint64(min))
-	default:
-		panic("unsupported type")
 	}
+	return T(0)
 }
 
 // RandomInteger generates a random integer of the specified type using the provided random number generator.
@@ -111,19 +110,16 @@ func RandomInteger[T int | int32 | int64 | uint | uint32 | uint64](rng *rand.Ran
 		return T(rng.Uint32())
 	case uint64:
 		return T(rng.Uint64())
-	default:
-		panic("unsupported type")
 	}
+	return T(0)
 }
 
 // RandomFloatBetween generates a random float between min and max with the specified number of decimal places using the provided random number generator.
-// If decimalsExact is true, the result will be rounded to the specified 'decimals' decimal places. If false, the result may have up to 'decimals' decimal places.
+// If decimalsExact is true, the result will be rounded to the specified 'decimals' decimal places.
+// If false, the result may have up to 'decimals' decimal places.
 func RandomFloatBetween(rng *rand.Rand, decimals int, decimalsExact bool, min, max float64) float64 {
 	if min > max {
 		min, max = max, min
-	}
-	if min == max {
-		return min
 	}
 
 	if decimals < 0 {

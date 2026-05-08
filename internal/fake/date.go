@@ -1,10 +1,11 @@
 package fake
 
 import (
-	"kmock/internal/randkit"
 	"math/rand/v2"
 	"strings"
 	"time"
+
+	"github.com/lfsc09/kmock/internal/randkit"
 )
 
 const (
@@ -30,7 +31,6 @@ func (d Date) Date(from string, to string, format string) string {
 	if format == "" {
 		format = dateDefaultFormat
 	}
-
 	fromTime, err := time.Parse(dateDefaultFormat, from)
 	if err != nil {
 		return ""
@@ -39,7 +39,6 @@ func (d Date) Date(from string, to string, format string) string {
 	if err != nil {
 		return ""
 	}
-
 	randomDate := randkit.RandomDateTime(d.Rng, fromTime, toTime)
 	return randomDate.Format(parseFormat(format))
 }
@@ -57,7 +56,6 @@ func (d Date) Time(from string, to string, format string) string {
 	if format == "" {
 		format = timeDefaultFormat
 	}
-
 	fromTime, err := time.Parse(timeDefaultFormat, from)
 	if err != nil {
 		return ""
@@ -66,7 +64,6 @@ func (d Date) Time(from string, to string, format string) string {
 	if err != nil {
 		return ""
 	}
-
 	randomTime := randkit.RandomDateTime(d.Rng, fromTime, toTime)
 	return randomTime.Format(parseFormat(format))
 }
@@ -84,7 +81,6 @@ func (d Date) DateTime(from string, to string, format string) string {
 	if format == "" {
 		format = dateTimeDefaultFormat
 	}
-
 	fromTime, err := time.Parse(dateTimeDefaultFormat, from)
 	if err != nil {
 		return ""
@@ -93,7 +89,6 @@ func (d Date) DateTime(from string, to string, format string) string {
 	if err != nil {
 		return ""
 	}
-
 	randomDateTime := randkit.RandomDateTime(d.Rng, fromTime, toTime)
 	return randomDateTime.Format(parseFormat(format))
 }
@@ -148,10 +143,8 @@ func parseFormat(format string) string {
 		"ss":   "05",
 		"sss":  "000",
 	}
-
 	for key, value := range replacements {
 		result = strings.ReplaceAll(result, key, value)
 	}
-
 	return result
 }

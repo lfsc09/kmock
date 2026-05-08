@@ -1,50 +1,53 @@
 package fake
 
 import (
+	"fmt"
+
 	"github.com/google/uuid"
 )
 
-type ID struct {
-	seqIdState int
-}
+var errUUIDGeneration = fmt.Errorf("failed to generate")
+
+type ID struct{}
 
 // UUIDv4 generates a random UUID version 4 string.
-func (i ID) UUIDv4() string {
+// It returns an error if the UUID generation fails.
+func (i ID) UUIDv4() (string, error) {
 	randomUuidv4, err := uuid.NewRandom()
 	if err != nil {
-		panic(err)
+		return "", fmt.Errorf("%w UUIDv4: %v", errUUIDGeneration, err)
 	}
-	return randomUuidv4.String()
+	return randomUuidv4.String(), nil
 }
 
 // UUIDv6 generates a random UUID version 6 string.
-func (i ID) UUIDv6() string {
+// It returns an error if the UUID generation fails.
+func (i ID) UUIDv6() (string, error) {
 	randomUuidv6, err := uuid.NewV6()
 	if err != nil {
-		panic(err)
+		return "", fmt.Errorf("%w UUIDv6: %v", errUUIDGeneration, err)
 	}
-	return randomUuidv6.String()
+	return randomUuidv6.String(), nil
 }
 
 // UUIDv7 generates a random UUID version 7 string.
-func (i ID) UUIDv7() string {
+// It returns an error if the UUID generation fails.
+func (i ID) UUIDv7() (string, error) {
 	randomUuidv7, err := uuid.NewV7()
 	if err != nil {
-		panic(err)
+		return "", fmt.Errorf("%w UUIDv7: %v", errUUIDGeneration, err)
 	}
-	return randomUuidv7.String()
+	return randomUuidv7.String(), nil
 }
 
 // SequentialID generates a sequential integer ID starting from the specified value.
 // If the provided startFrom value is negative, it defaults to 0.
-// Each call to SequentialID increments the internal state and returns the next sequential ID.
 func (i *ID) SequentialID(startFrom int) int {
 	if startFrom < 0 {
 		startFrom = 0
 	}
-	i.seqIdState = startFrom
-	i.seqIdState++
-	return i.seqIdState
+	startFrom++
+	return startFrom
 }
 
 // // RuntimeDocs provides runtime documentation for the ID struct and its methods
