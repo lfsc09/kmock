@@ -115,7 +115,7 @@ func (p Person) Password(strength string) (string, error) {
 	case "strong":
 		template = "[a-zA-Z0-9!@#$%^&*()_+]{12}"
 	default:
-		template = "[a-zA-Z0-9!@#$%^&*()_+]{8,}"
+		template = "[a-zA-Z0-9]{8}"
 	}
 	randExp, err := randexp.NewRandexpGenerator(template)
 	if err != nil {
