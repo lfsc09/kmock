@@ -51,25 +51,25 @@ func (l Lorem) Paragraph(sentenceCount int) string {
 }
 
 // RuntimeDocs provides runtime documentation for the Lorem struct and its methods
-func (l Lorem) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Lorem",
-		Methods: map[string]RunTimeDocsMethod{
-			"Word": {
-				Name:        "Word",
-				Description: "Generates a random lorem word",
-				Params:      []string{},
-			},
-			"Sentence": {
-				Name:        "Sentence",
-				Description: "Generates a random lorem sentence with the specified number of words",
-				Params:      []string{"number"},
-			},
-			"Paragraph": {
-				Name:        "Paragraph",
-				Description: "Generates a random lorem paragraph with the specified number of sentences",
-				Params:      []string{"number"},
-			},
+func (l Lorem) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Lorem",
+			Method:      "Word",
+			Description: "Generates a random lorem word",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Lorem",
+			Method:      "Sentence",
+			Description: "Generates a random lorem sentence with the specified number of words",
+			Params:      []string{"number"},
+		},
+		{
+			Domain:      "Lorem",
+			Method:      "Paragraph",
+			Description: "Generates a random lorem paragraph with the specified number of sentences",
+			Params:      []string{"number"},
 		},
 	}
 }

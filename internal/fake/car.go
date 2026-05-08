@@ -41,30 +41,31 @@ func (c Car) Color() string {
 	return randkit.PickFromList(c.Rng, colors)
 }
 
-func (c Car) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Car",
-		Methods: map[string]RunTimeDocsMethod{
-			"Brand": {
-				Name:        "Brand",
-				Description: "Generates a random car brand",
-				Params:      []string{},
-			},
-			"Model": {
-				Name:        "Model",
-				Description: "Generates a random car model based on the brand",
-				Params:      []string{},
-			},
-			"LicensePlate": {
-				Name:        "LicensePlate",
-				Description: "Generates a random license plate based on the specified locale",
-				Params:      []string{"locale"},
-			},
-			"Color": {
-				Name:        "Color",
-				Description: "Generates a random car color",
-				Params:      []string{},
-			},
+func (c Car) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Car",
+			Method:      "Brand",
+			Description: "Generates a random car brand",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Car",
+			Method:      "Model",
+			Description: "Generates a random car model based on the brand",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Car",
+			Method:      "LicensePlate",
+			Description: "Generates a random license plate based on the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Car",
+			Method:      "Color",
+			Description: "Generates a random car color",
+			Params:      []string{},
 		},
 	}
 }

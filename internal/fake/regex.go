@@ -38,15 +38,13 @@ func (r *Regex) ClearCache() {
 }
 
 // RuntimeDocs provides runtime documentation for the Regex struct and its methods
-func (r Regex) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Regex",
-		Methods: map[string]RunTimeDocsMethod{
-			"Generate": {
-				Name:        "Generate",
-				Description: "Generates a random string that matches the provided regular expression pattern",
-				Params:      []string{"pattern"},
-			},
+func (r Regex) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Regex",
+			Method:      "Generate",
+			Description: "Generates a random string that matches the provided regular expression pattern",
+			Params:      []string{"pattern"},
 		},
 	}
 }

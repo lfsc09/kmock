@@ -71,45 +71,49 @@ func (i Internet) UserAgent() string {
 }
 
 // RuntimeDocs provides runtime documentation for the Internet struct and its methods
-func (i Internet) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Internet",
-		Methods: map[string]RunTimeDocsMethod{
-			"Domain": {
-				Name:        "Domain",
-				Description: "Generates a random domain name",
-				Params:      []string{},
-			},
-			"DomainWithSubdomain": {
-				Name:        "DomainWithSubdomain",
-				Description: "Generates a random domain name with a subdomain",
-				Params:      []string{},
-			},
-			"Ipv4": {
-				Name:        "Ipv4",
-				Description: "Generates a random IPv4 address",
-				Params:      []string{},
-			},
-			"Ipv6": {
-				Name:        "Ipv6",
-				Description: "Generates a random IPv6 address",
-				Params:      []string{},
-			},
-			"MacAddress": {
-				Name:        "MacAddress",
-				Description: "Generates a random MAC address",
-				Params:      []string{},
-			},
-			"Url": {
-				Name:        "Url",
-				Description: "Generates a random URL",
-				Params:      []string{},
-			},
-			"UserAgent": {
-				Name:        "UserAgent",
-				Description: "Generates a random user agent string",
-				Params:      []string{},
-			},
+func (i Internet) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Internet",
+			Method:      "Domain",
+			Description: "Generates a random domain name",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Internet",
+			Method:      "DomainWithSubdomain",
+			Description: "Generates a random domain name with a subdomain",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Internet",
+			Method:      "Ipv4",
+			Description: "Generates a random IPv4 address",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Internet",
+			Method:      "Ipv6",
+			Description: "Generates a random IPv6 address",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Internet",
+			Method:      "MacAddress",
+			Description: "Generates a random MAC address",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Internet",
+			Method:      "Url",
+			Description: "Generates a random URL",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Internet",
+			Method:      "UserAgent",
+			Description: "Generates a random user agent string",
+			Params:      []string{},
 		},
 	}
 }

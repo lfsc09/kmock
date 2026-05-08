@@ -79,35 +79,37 @@ func (f Finance) CreditCardHolder(locale string) (string, error) {
 }
 
 // RuntimeDocs provides runtime documentation for the Finance struct and its methods
-func (f Finance) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Finance",
-		Methods: map[string]RunTimeDocsMethod{
-			"CreditCardVendor": {
-				Name:        "CreditCardVendor",
-				Description: "Generates a random credit card vendor",
-				Params:      []string{},
-			},
-			"CreditCardNumber": {
-				Name:        "CreditCardNumber",
-				Description: "Generates a random credit card number with a valid Luhn checksum",
-				Params:      []string{},
-			},
-			"CreditCardCVV": {
-				Name:        "CreditCardCVV",
-				Description: "Generates a random 3-digit credit card CVV",
-				Params:      []string{},
-			},
-			"CreditCardExpirationDate": {
-				Name:        "CreditCardExpirationDate",
-				Description: "Generates a random credit card expiration date in the format MM/YYYY",
-				Params:      []string{},
-			},
-			"CreditCardHolder": {
-				Name:        "CreditCardHolder",
-				Description: "Generates a random credit card holder name",
-				Params:      []string{"locale"},
-			},
+func (f Finance) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Finance",
+			Method:      "CreditCardVendor",
+			Description: "Generates a random credit card vendor",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Finance",
+			Method:      "CreditCardNumber",
+			Description: "Generates a random credit card number with a valid Luhn checksum",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Finance",
+			Method:      "CreditCardCVV",
+			Description: "Generates a random 3-digit credit card CVV",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Finance",
+			Method:      "CreditCardExpirationDate",
+			Description: "Generates a random credit card expiration date in the format MM/YYYY",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Finance",
+			Method:      "CreditCardHolder",
+			Description: "Generates a random credit card holder name",
+			Params:      []string{"locale"},
 		},
 	}
 }

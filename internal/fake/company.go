@@ -91,50 +91,55 @@ func (c Company) CNAE() string {
 }
 
 // RuntimeDocs provides runtime documentation for the Company struct and its methods
-func (c Company) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Company",
-		Methods: map[string]RunTimeDocsMethod{
-			"Name": {
-				Name:        "Name",
-				Description: "Generates a random company name based on the specified locale",
-				Params:      []string{"locale"},
-			},
-			"Dba": {
-				Name:        "Dba",
-				Description: "Generates a random 'doing business as' (Nome fantasia) name for a company",
-				Params:      []string{"locale"},
-			},
-			"Industry": {
-				Name:        "Industry",
-				Description: "Generates a random industry name for a company",
-				Params:      []string{"locale"},
-			},
-			"Suffix": {
-				Name:        "Suffix",
-				Description: "Generates a random company suffix (e.g., Inc., LLC, etc.)",
-				Params:      []string{"locale"},
-			},
-			"EIN": {
-				Name:        "EIN",
-				Description: "Generates a random Employer Identification Number (EIN) for a company",
-				Params:      []string{},
-			},
-			"CNPJLegacyValid": {
-				Name:        "CNPJLegacyValid",
-				Description: "Generates a random valid legacy (00.000.000/0000-00) Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company",
-				Params:      []string{},
-			},
-			"IE": {
-				Name:        "IE",
-				Description: "Generates a random Brazilian IE (Inscrição Estadual) number for a company",
-				Params:      []string{},
-			},
-			"CNAE": {
-				Name:        "CNAE",
-				Description: "Generates a random Brazilian CNAE (Classificação Nacional de Atividades Econômicas) code for a company",
-				Params:      []string{},
-			},
+func (c Company) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Company",
+			Method:      "Name",
+			Description: "Generates a random company name based on the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Company",
+			Method:      "Dba",
+			Description: "Generates a random 'doing business as' (Nome fantasia) name for a company",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Company",
+			Method:      "Industry",
+			Description: "Generates a random industry name for a company",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Company",
+			Method:      "Suffix",
+			Description: "Generates a random company suffix (e.g., Inc., LLC, etc.)",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Company",
+			Method:      "EIN",
+			Description: "Generates a random Employer Identification Number (EIN) for a company",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Company",
+			Method:      "CNPJLegacyValid",
+			Description: "Generates a random valid legacy (00.000.000/0000-00) Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Company",
+			Method:      "IE",
+			Description: "Generates a random Brazilian IE (Inscrição Estadual) number for a company",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Company",
+			Method:      "CNAE",
+			Description: "Generates a random Brazilian CNAE (Classificação Nacional de Atividades Econômicas) code for a company",
+			Params:      []string{},
 		},
 	}
 }

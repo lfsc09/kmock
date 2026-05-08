@@ -51,30 +51,31 @@ func (i *ID) SequentialID(startFrom int) int {
 }
 
 // // RuntimeDocs provides runtime documentation for the ID struct and its methods
-func (i ID) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "ID",
-		Methods: map[string]RunTimeDocsMethod{
-			"UUIDv4": {
-				Name:        "UUIDv4",
-				Description: "Generates a random UUID version 4 string",
-				Params:      []string{},
-			},
-			"UUIDv6": {
-				Name:        "UUIDv6",
-				Description: "Generates a random UUID version 6 string",
-				Params:      []string{},
-			},
-			"UUIDv7": {
-				Name:        "UUIDv7",
-				Description: "Generates a random UUID version 7 string",
-				Params:      []string{},
-			},
-			"SequentialID": {
-				Name:        "SequentialID",
-				Description: "Generates a sequential integer ID starting from the specified value",
-				Params:      []string{"start"},
-			},
+func (i ID) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "ID",
+			Method:      "UUIDv4",
+			Description: "Generates a random UUID version 4 string",
+			Params:      []string{},
+		},
+		{
+			Domain:      "ID",
+			Method:      "UUIDv6",
+			Description: "Generates a random UUID version 6 string",
+			Params:      []string{},
+		},
+		{
+			Domain:      "ID",
+			Method:      "UUIDv7",
+			Description: "Generates a random UUID version 7 string",
+			Params:      []string{},
+		},
+		{
+			Domain:      "ID",
+			Method:      "SequentialID",
+			Description: "Generates a sequential integer ID starting from the specified value",
+			Params:      []string{"startFrom"},
 		},
 	}
 }

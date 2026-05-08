@@ -102,30 +102,31 @@ func (d Date) Now(format string) string {
 }
 
 // RuntimeDocs provides runtime documentation for the Date struct and its methods
-func (d Date) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Date",
-		Methods: map[string]RunTimeDocsMethod{
-			"Date": {
-				Name:        "Date",
-				Description: "Generates a random date, from/to: YYYY-MM-DD. Default format: YYYY-MM-DD",
-				Params:      []string{"from", "to", "format"},
-			},
-			"Time": {
-				Name:        "Time",
-				Description: "Generates a random time, from/to: hh:mm:ss. Default format: hh:mm:ss",
-				Params:      []string{"from", "to", "format"},
-			},
-			"DateTime": {
-				Name:        "DateTime",
-				Description: "Generates a random datetime, from/to: YYYY-MM-DD hh:mm:ss. Default format: YYYY-MM-DD hh:mm:ss",
-				Params:      []string{"from", "to", "format"},
-			},
-			"Now": {
-				Name:        "Now",
-				Description: "Generates the current datetime. Default format: YYYY-MM-DD hh:mm:ss",
-				Params:      []string{"format"},
-			},
+func (d Date) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Date",
+			Method:      "Date",
+			Description: "Generates a random date, from/to: YYYY-MM-DD. Default format: YYYY-MM-DD",
+			Params:      []string{"from", "to", "format"},
+		},
+		{
+			Domain:      "Date",
+			Method:      "Time",
+			Description: "Generates a random time, from/to: hh:mm:ss. Default format: hh:mm:ss",
+			Params:      []string{"from", "to", "format"},
+		},
+		{
+			Domain:      "Date",
+			Method:      "DateTime",
+			Description: "Generates a random datetime, from/to: YYYY-MM-DD hh:mm:ss. Default format: YYYY-MM-DD hh:mm:ss",
+			Params:      []string{"from", "to", "format"},
+		},
+		{
+			Domain:      "Date",
+			Method:      "Now",
+			Description: "Generates the current datetime. Default format: YYYY-MM-DD hh:mm:ss",
+			Params:      []string{"format"},
 		},
 	}
 }

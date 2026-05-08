@@ -124,75 +124,85 @@ func (a Address) Longitude() float64 {
 }
 
 // RuntimeDocs provides runtime documentation for the Address struct and its methods
-func (a Address) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Address",
-		Methods: map[string]RunTimeDocsMethod{
-			"Country": {
-				Name:        "Country",
-				Description: "Generates a random country name",
-				Params:      []string{},
-			},
-			"CountryCode": {
-				Name:        "CountryCode",
-				Description: "Generates a random country code",
-				Params:      []string{},
-			},
-			"State": {
-				Name:        "State",
-				Description: "Generates a random state name for the specified locale",
-				Params:      []string{"locale"},
-			},
-			"StateCode": {
-				Name:        "StateCode",
-				Description: "Generates a random state code for the specified locale",
-				Params:      []string{"locale"},
-			},
-			"City": {
-				Name:        "City",
-				Description: "Generates a random city name for the specified locale",
-				Params:      []string{"locale"},
-			},
-			"CityFromState": {
-				Name:        "CityFromState",
-				Description: "Generates a random city name for the specified locale and state code",
-				Params:      []string{"locale", "stateCode"},
-			},
-			"Neighborhood": {
-				Name:        "Neighborhood",
-				Description: "Generates a random neighborhood name for the specified locale",
-				Params:      []string{"locale"},
-			},
-			"StreetName": {
-				Name:        "StreetName",
-				Description: "Generates a random street name for the specified locale",
-				Params:      []string{"locale"},
-			},
-			"StreetNumber": {
-				Name:        "StreetNumber",
-				Description: "Generates a random street number",
-				Params:      []string{},
-			},
-			"StreetComplement": {
-				Name:        "StreetComplement",
-				Description: "Generates a random street complement for the specified locale",
-				Params:      []string{"locale"},
-			},
-			"ZipCode": {
-				Name:        "ZipCode",
-				Description: "Generates a random zip code for the specified locale",
-				Params:      []string{"locale"},
-			},
-			"Latitude": {
-				Name:        "Latitude",
-				Description: "Generates a random latitude value between -90 and 90 degrees",
-				Params:      []string{},
-			},
-			"Longitude": {
-				Name:        "Longitude",
-				Description: "Generates a random longitude value between -180 and 180 degrees",
-				Params:      []string{},
-			},
+func (a Address) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Address",
+			Method:      "Country",
+			Description: "Generates a random country name",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Address",
+			Method:      "CountryCode",
+			Description: "Generates a random country code",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Address",
+			Method:      "State",
+			Description: "Generates a random state name for the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Address",
+			Method:      "StateCode",
+			Description: "Generates a random state code for the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Address",
+			Method:      "City",
+			Description: "Generates a random city name for the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Address",
+			Method:      "CityFromState",
+			Description: "Generates a random city name for the specified locale and state code",
+			Params:      []string{"locale", "stateCode"},
+		},
+		{
+			Domain:      "Address",
+			Method:      "Neighborhood",
+			Description: "Generates a random neighborhood name for the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Address",
+			Method:      "StreetName",
+			Description: "Generates a random street name for the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Address",
+			Method:      "StreetNumber",
+			Description: "Generates a random street number",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Address",
+			Method:      "StreetComplement",
+			Description: "Generates a random street complement for the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Address",
+			Method:      "ZipCode",
+			Description: "Generates a random zip code for the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Address",
+			Method:      "Latitude",
+			Description: "Generates a random latitude value between -90 and 90 degrees",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Address",
+			Method:      "Longitude",
+			Description: "Generates a random longitude value between -180 and 180 degrees",
+			Params:      []string{},
 		},
 	}
 }

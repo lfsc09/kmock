@@ -162,60 +162,67 @@ func (p Person) CPFValid() string {
 }
 
 // RuntimeDocs provides runtime documentation for the Person struct and its methods
-func (p Person) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Person",
-		Methods: map[string]RunTimeDocsMethod{
-			"Name": {
-				Name:        "Name",
-				Description: "Generates a random full name based on the specified locale",
-				Params:      []string{"locale"},
-			},
-			"FirstName": {
-				Name:        "FirstName",
-				Description: "Generates a random first name based on the specified locale",
-				Params:      []string{"locale"},
-			},
-			"MiddleName": {
-				Name:        "MiddleName",
-				Description: "Generates a random middle name based on the specified locale",
-				Params:      []string{"locale"},
-			},
-			"LastName": {
-				Name:        "LastName",
-				Description: "Generates a random last name based on the specified locale",
-				Params:      []string{"locale"},
-			},
-			"Phone": {
-				Name:        "Phone",
-				Description: "Generates a random phone number",
-				Params:      []string{},
-			},
-			"Email": {
-				Name:        "Email",
-				Description: "Generates a random email address",
-				Params:      []string{},
-			},
-			"Username": {
-				Name:        "Username",
-				Description: "Generates a random username",
-				Params:      []string{},
-			},
-			"Password": {
-				Name:        "Password",
-				Description: "Generates a random password based on the specified strength level (weak, medium, strong)",
-				Params:      []string{"strength"},
-			},
-			"JobTitle": {
-				Name:        "JobTitle",
-				Description: "Generates a random job title based on the specified locale",
-				Params:      []string{"locale"},
-			},
-			"CPFValid": {
-				Name:        "CPFValid",
-				Description: "Generates a random valid CPF number",
-				Params:      []string{},
-			},
+func (p Person) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Person",
+			Method:      "Name",
+			Description: "Generates a random full name based on the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Person",
+			Method:      "FirstName",
+			Description: "Generates a random first name based on the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Person",
+			Method:      "MiddleName",
+			Description: "Generates a random middle name based on the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Person",
+			Method:      "LastName",
+			Description: "Generates a random last name based on the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Person",
+			Method:      "Phone",
+			Description: "Generates a random phone number",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Person",
+			Method:      "Email",
+			Description: "Generates a random email address",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Person",
+			Method:      "Username",
+			Description: "Generates a random username",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Person",
+			Method:      "Password",
+			Description: "Generates a random password based on the specified strength level (weak, medium, strong)",
+			Params:      []string{"strength"},
+		},
+		{
+			Domain:      "Person",
+			Method:      "JobTitle",
+			Description: "Generates a random job title based on the specified locale",
+			Params:      []string{"locale"},
+		},
+		{
+			Domain:      "Person",
+			Method:      "CPFValid",
+			Description: "Generates a random valid CPF number",
+			Params:      []string{},
 		},
 	}
 }

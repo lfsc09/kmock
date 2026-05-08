@@ -31,25 +31,25 @@ func (c Currency) Full() (string, string, string) {
 	return pick.name, pick.code, pick.symbol
 }
 
-func (c Currency) RuntimeDocs() *RunTimeDocs {
-	return &RunTimeDocs{
-		Struct: "Currency",
-		Methods: map[string]RunTimeDocsMethod{
-			"Name": {
-				Name:        "Name",
-				Description: "Generates a random currency name",
-				Params:      []string{},
-			},
-			"Code": {
-				Name:        "Code",
-				Description: "Generates a random currency code",
-				Params:      []string{},
-			},
-			"Symbol": {
-				Name:        "Symbol",
-				Description: "Generates a random currency symbol",
-				Params:      []string{},
-			},
+func (c Currency) RuntimeDocs() []*RunTimeDocs {
+	return []*RunTimeDocs{
+		{
+			Domain:      "Currency",
+			Method:      "Name",
+			Description: "Generates a random currency name",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Currency",
+			Method:      "Code",
+			Description: "Generates a random currency code",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Currency",
+			Method:      "Symbol",
+			Description: "Generates a random currency symbol",
+			Params:      []string{},
 		},
 	}
 }
