@@ -71,25 +71,43 @@ func RandomDigit(rng *rand.Rand) int {
 }
 
 // RandomIntegerBetween generates a random integer between min and max (inclusive) using the provided random number generator.
+// If min is greater than max, they will be swapped to ensure a valid range.
+// If max is 0, it will be treated as the maximum value for the type T (e.g., math.MaxInt for int).
 func RandomIntegerBetween[T int | int32 | int64 | uint | uint32 | uint64](rng *rand.Rand, min, max T) T {
 	if min > max {
 		min, max = max, min
 	}
-	if min == max {
-		return min
-	}
+
 	switch any(T(0)).(type) {
 	case int:
+		if max == T(0) {
+			max = T(any(math.MaxInt).(int))
+		}
 		return T(rng.Int()%(int(max)-int(min)+1) + int(min))
 	case int32:
+		if max == T(0) {
+			max = T(any(int32(math.MaxInt32)).(int32))
+		}
 		return T(rng.Int32()%(int32(max)-int32(min)+1) + int32(min))
 	case int64:
+		if max == T(0) {
+			max = T(any(int64(math.MaxInt64)).(int64))
+		}
 		return T(rng.Int64()%(int64(max)-int64(min)+1) + int64(min))
 	case uint:
+		if max == T(0) {
+			max = T(any(uint(math.MaxUint)).(uint))
+		}
 		return T(rng.Uint()%(uint(max)-uint(min)+1) + uint(min))
 	case uint32:
+		if max == T(0) {
+			max = T(any(uint32(math.MaxUint32)).(uint32))
+		}
 		return T(rng.Uint32()%(uint32(max)-uint32(min)+1) + uint32(min))
 	case uint64:
+		if max == T(0) {
+			max = T(any(uint64(math.MaxUint64)).(uint64))
+		}
 		return T(rng.Uint64()%(uint64(max)-uint64(min)+1) + uint64(min))
 	}
 	return T(0)
@@ -114,12 +132,18 @@ func RandomInteger[T int | int32 | int64 | uint | uint32 | uint64](rng *rand.Ran
 	return T(0)
 }
 
-// RandomFloatBetween generates a random float between min and max with the specified number of decimal places using the provided random number generator.
+// RandomFloatBetween generates a random float between min and max (inclusive) with the specified number of decimal places using the provided random number generator.
+// If min is greater than max, they will be swapped to ensure a valid range.
+// If max is 0, it will be treated as math.MaxFloat64.
 // If decimalsExact is true, the result will be rounded to the specified 'decimals' decimal places.
 // If false, the result may have up to 'decimals' decimal places.
 func RandomFloatBetween(rng *rand.Rand, decimals int, decimalsExact bool, min, max float64) float64 {
 	if min > max {
 		min, max = max, min
+	}
+
+	if max == 0 {
+		max = math.MaxFloat64
 	}
 
 	if decimals < 0 {

@@ -1,6 +1,7 @@
 package fake
 
 import (
+	"math"
 	"math/rand/v2"
 	"testing"
 
@@ -43,6 +44,9 @@ func (suite *MockNumberTestSuite) TestIntBetween() {
 	suite.LessOrEqual(result, 5, "IntBetween should return a value less than or equal to max [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
 	result = suite.number.IntBetween(3, 3)
 	suite.Equal(3, result, "IntBetween should return the same value when min and max are equal [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
+	result = suite.number.IntBetween(0, 0)
+	suite.GreaterOrEqual(result, 0, "IntBetween should return a value greater than or equal to min [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
+	suite.LessOrEqual(result, math.MaxInt, "IntBetween should return a value less than or equal to max [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
 }
 
 func (suite *MockNumberTestSuite) TestFloat() {
