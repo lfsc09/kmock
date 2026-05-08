@@ -108,13 +108,13 @@ func (suite *MockPersonTestSuite) TestUsername() {
 }
 
 func (suite *MockPersonTestSuite) TestPassword() {
-	weak, err := suite.person.Password("weak")
+	weak, err := suite.person.Password(PWD_WEAK)
 	suite.NoError(err, "Password (weak) should not return an error for valid strength [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
 	suite.NotEmpty(weak, "Password (weak) should return a non-empty string for valid strength [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
-	medium, err := suite.person.Password("medium")
+	medium, err := suite.person.Password(PWD_MEDIUM)
 	suite.NoError(err, "Password (medium) should not return an error for valid strength [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
 	suite.NotEmpty(medium, "Password (medium) should return a non-empty string for valid strength [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
-	strong, err := suite.person.Password("strong")
+	strong, err := suite.person.Password(PWD_STRONG)
 	suite.NoError(err, "Password (strong) should not return an error for valid strength [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
 	suite.NotEmpty(strong, "Password (strong) should return a non-empty string for valid strength [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
 }

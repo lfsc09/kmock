@@ -8,8 +8,11 @@ import (
 )
 
 const (
-	EN_US = fake.EN_US
-	PT_BR = fake.PT_BR
+	EN_US      = fake.EN_US
+	PT_BR      = fake.PT_BR
+	PWD_WEAK   = fake.PWD_WEAK
+	PWD_MEDIUM = fake.PWD_MEDIUM
+	PWD_STRONG = fake.PWD_STRONG
 )
 
 type KMock struct {

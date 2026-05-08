@@ -8,6 +8,12 @@ import (
 	"github.com/lfsc09/kmock/internal/randkit"
 )
 
+const (
+	PWD_WEAK   = "weak"
+	PWD_MEDIUM = "medium"
+	PWD_STRONG = "strong"
+)
+
 type Person struct {
 	Rng *rand.Rand
 }
@@ -108,11 +114,11 @@ func (p Person) Username() (string, error) {
 func (p Person) Password(strength string) (string, error) {
 	var template string
 	switch strength {
-	case "weak":
+	case PWD_WEAK:
 		template = "[a-z]{8}"
-	case "medium":
+	case PWD_MEDIUM:
 		template = "[a-zA-Z0-9]{8}"
-	case "strong":
+	case PWD_STRONG:
 		template = "[a-zA-Z0-9!@#$%^&*()_+]{12}"
 	default:
 		template = "[a-zA-Z0-9]{8}"
