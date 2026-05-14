@@ -50,6 +50,7 @@ It covers a wide range of domains, with locale support for region-specific data.
 | `Company` | `Suffix` | `[locale]` |
 | `Company` | `EIN` | |
 | `Company` | `CNPJLegacyValid` | |
+| `Company` | `CNPJAlphanumericValid` | |
 | `Company` | `IE` | |
 | `Company` | `CNAE` | |
 | `Currency` | `Name` | |
