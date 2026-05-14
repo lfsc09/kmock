@@ -96,6 +96,7 @@ func (suite *MockKmockTestSuite) TestKMockCompany() {
 	suite.NotEmpty(result, "Suffix should not be empty for EN_US locale")
 	suite.NotEmpty(km.Company.EIN(), "EIN should not be empty")
 	suite.NotEmpty(km.Company.CNPJLegacyValid(), "CNPJLegacyValid should not be empty")
+	suite.NotEmpty(km.Company.CNPJAlphanumericValid(), "CNPJAlphanumericValid should not be empty")
 	suite.NotEmpty(km.Company.IE(), "IE should not be empty")
 	suite.NotEmpty(km.Company.CNAE(), "CNAE should not be empty")
 	suite.NotNil(km.Company.RuntimeDocs(), "RuntimeDocs should not be nil")

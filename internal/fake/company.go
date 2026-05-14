@@ -75,6 +75,29 @@ func (c Company) CNPJLegacyValid() string {
 	)
 }
 
+// CNPJAlphanumericValid generates a random valid alphanumeric Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company.
+func (c Company) CNPJAlphanumericValid() string {
+	cnpj := make([]byte, 12)
+	// Generate the first 12 digits
+	for i := range 12 {
+		cnpj[i] = randkit.RandomAlphanumeric(c.Rng, true)[0]
+	}
+	// Multipliers for checksum digits
+	multipliers1 := []int{5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2}
+	multipliers2 := []int{6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2}
+	// Calculate the first checksum digit
+	cnpj = append(cnpj[:12], cnpjChecksum(cnpj[:12], multipliers1))
+	// Calculate the second checksum digit
+	cnpj = append(cnpj[:13], cnpjChecksum(cnpj[:13], multipliers2))
+	return fmt.Sprintf("%02s.%03s.%03s/%04s-%02s",
+		string(cnpj[0:2]),
+		string(cnpj[2:5]),
+		string(cnpj[5:8]),
+		string(cnpj[8:12]),
+		string(cnpj[12:14]),
+	)
+}
+
 // IE generates a random Brazilian IE (Inscrição Estadual) number for a company.
 func (c Company) IE() string {
 	templates := []string{
@@ -146,14 +169,28 @@ func (c Company) RuntimeDocs() []*RunTimeDocs {
 
 // cnpjChecksum calculates the checksum digit for a CNPJ number based on the provided digits and multipliers.
 // It sums the products of the digits and their corresponding multipliers, then calculates the modulus 11 of the sum.
-func cnpjChecksum(digits []int, multipliers []int) int {
+func cnpjChecksum[T int | byte](digits []T, multipliers []int) T {
 	sum := 0
-	for i, m := range multipliers {
-		sum += digits[i] * m
-	}
-	mod := sum % 11
-	if mod < 2 {
+	switch typedDidigts := any(digits).(type) {
+	case []int:
+		for i, m := range multipliers {
+			sum += typedDidigts[i] * m
+		}
+		mod := sum % 11
+		if mod < 2 {
+			return 0
+		}
+		return T(11 - mod)
+	case []byte:
+		for i, m := range multipliers {
+			sum += (int(typedDidigts[i]) - 48) * m
+		}
+		mod := sum % 11
+		if mod < 2 {
+			return T(48)
+		}
+		return T(48 + 11 - mod)
+	default:
 		return 0
 	}
-	return 11 - mod
 }

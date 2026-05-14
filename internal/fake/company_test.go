@@ -98,6 +98,12 @@ func (suite *MockCompanyTestSuite) TestCNPJLegacyValid() {
 	assert.Regexp(suite.T(), `^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$`, cnpj, fmt.Sprintf("CNPJLegacyValid should return a string in the format 00.000.000/0000-00 [seeds: %d, %d]", suite.seeds[0], suite.seeds[1]))
 }
 
+func (suite *MockCompanyTestSuite) TestCNPJAlphanumericValid() {
+	cnpj := suite.company.CNPJAlphanumericValid()
+	assert.NotEmpty(suite.T(), cnpj, fmt.Sprintf("CNPJAlphanumericValid should return a non-empty string [seeds: %d, %d]", suite.seeds[0], suite.seeds[1]))
+	assert.Regexp(suite.T(), `^[A-Z0-9]{2}\.[A-Z0-9]{3}\.[A-Z0-9]{3}/[A-Z0-9]{4}-\d{2}$`, cnpj, fmt.Sprintf("CNPJAlphanumericValid should return a string in the format XX.XXX.XXX/XXXX-00 with alphanumeric characters [seeds: %d, %d]", suite.seeds[0], suite.seeds[1]))
+}
+
 func (suite *MockCompanyTestSuite) TestIE() {
 	ie := suite.company.IE()
 	assert.NotEmpty(suite.T(), ie, fmt.Sprintf("IE should return a non-empty string [seeds: %d, %d]", suite.seeds[0], suite.seeds[1]))
