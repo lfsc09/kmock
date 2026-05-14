@@ -161,6 +161,30 @@ func (p Person) CPFValid() string {
 	)
 }
 
+// CPFInvalid generates a random invalid CPF (Cadastro de Pessoas Físicas) number for a person using the provided random number generator.
+func (p Person) CPFInvalid() string {
+	cpf := make([]int, 9)
+	// Generate the first 9 digits
+	for i := range 9 {
+		cpf[i] = randkit.RandomIntegerBetween(p.Rng, 0, 9)
+	}
+	// Multipliers for checksum digits
+	multipliers1 := []int{10, 9, 8, 7, 6, 5, 4, 3, 2}
+	multipliers2 := []int{11, 10, 9, 8, 7, 6, 5, 4, 3, 2}
+	// Calculate the first checksum digit
+	cpf = append(cpf, cpfChecksum(cpf[:9], multipliers1))
+	// Calculate the second checksum digit
+	cpf = append(cpf, cpfChecksum(cpf[:10], multipliers2))
+	// Invalidate the CPF by altering the last digit
+	cpf[10] = (cpf[10] + 1) % 10
+	return fmt.Sprintf("%03d.%03d.%03d-%02d",
+		cpf[0]*100+cpf[1]*10+cpf[2],
+		cpf[3]*100+cpf[4]*10+cpf[5],
+		cpf[6]*100+cpf[7]*10+cpf[8],
+		cpf[9]*10+cpf[10],
+	)
+}
+
 // RuntimeDocs provides runtime documentation for the Person struct and its methods
 func (p Person) RuntimeDocs() []*RunTimeDocs {
 	return []*RunTimeDocs{
@@ -222,6 +246,12 @@ func (p Person) RuntimeDocs() []*RunTimeDocs {
 			Domain:      "Person",
 			Method:      "CPFValid",
 			Description: "Generates a random valid CPF number",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Person",
+			Method:      "CPFInvalid",
+			Description: "Generates a random invalid CPF number",
 			Params:      []string{},
 		},
 	}

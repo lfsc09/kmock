@@ -96,7 +96,9 @@ func (suite *MockKmockTestSuite) TestKMockCompany() {
 	suite.NotEmpty(result, "Suffix should not be empty for EN_US locale")
 	suite.NotEmpty(km.Company.EIN(), "EIN should not be empty")
 	suite.NotEmpty(km.Company.CNPJLegacyValid(), "CNPJLegacyValid should not be empty")
+	suite.NotEmpty(km.Company.CNPJLegacyInvalid(), "CNPJLegacyInvalid should not be empty")
 	suite.NotEmpty(km.Company.CNPJAlphanumericValid(), "CNPJAlphanumericValid should not be empty")
+	suite.NotEmpty(km.Company.CNPJAlphanumericInvalid(), "CNPJAlphanumericInvalid should not be empty")
 	suite.NotEmpty(km.Company.IE(), "IE should not be empty")
 	suite.NotEmpty(km.Company.CNAE(), "CNAE should not be empty")
 	suite.NotNil(km.Company.RuntimeDocs(), "RuntimeDocs should not be nil")
@@ -231,6 +233,7 @@ func (suite *MockKmockTestSuite) TestKMockPerson() {
 	suite.NoError(err, "JobTitle should not return an error for EN_US locale")
 	suite.NotEmpty(result, "JobTitle should not be empty for EN_US locale")
 	suite.NotEmpty(km.Person.CPFValid(), "CPFValid should not be empty")
+	suite.NotEmpty(km.Person.CPFInvalid(), "CPFInvalid should not be empty")
 	suite.NotNil(km.Person.RuntimeDocs(), "RuntimeDocs should not be nil")
 }
 

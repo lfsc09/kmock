@@ -2,6 +2,7 @@ package fake
 
 import (
 	"math/rand/v2"
+	"strings"
 	"testing"
 
 	"github.com/lfsc09/kmock/internal/randkit"
@@ -131,4 +132,39 @@ func (suite *MockPersonTestSuite) TestCPFValid() {
 	cpf := suite.person.CPFValid()
 	suite.NotEmpty(cpf, "CPFValid should return a non-empty string [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
 	suite.Regexp(`^\d{3}\.\d{3}\.\d{3}-\d{2}$`, cpf, "CPFValid should return a string in the format XXX.XXX.XXX-XX [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
+	suite.True(cpfIsValid(cpf), "CPFValid should return a valid CPF number [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
+}
+
+func (suite *MockPersonTestSuite) TestCPFInvalid() {
+	cpf := suite.person.CPFInvalid()
+	suite.NotEmpty(cpf, "CPFInvalid should return a non-empty string [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
+	suite.Regexp(`^\d{3}\.\d{3}\.\d{3}-\d{2}$`, cpf, "CPFInvalid should return a string in the format XXX.XXX.XXX-XX [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
+	suite.False(cpfIsValid(cpf), "CPFInvalid should return an invalid CPF number [seeds: %d, %d]", suite.seeds[0], suite.seeds[1])
+}
+
+// cpfIsValid is a helper function to validate CPF numbers. It checks the format and calculates the checksum digits to ensure the CPF is valid.
+func cpfIsValid(cpf string) bool {
+	s := strings.NewReplacer(".", "", "-", "").Replace(cpf)
+	if len(s) != 11 {
+		return false
+	}
+	digits := make([]int, 11)
+	for i, ch := range s {
+		digits[i] = int(ch - '0')
+	}
+	multipliers1 := []int{10, 9, 8, 7, 6, 5, 4, 3, 2}
+	multipliers2 := []int{11, 10, 9, 8, 7, 6, 5, 4, 3, 2}
+	checkDigit := func(d []int, mults []int) int {
+		sum := 0
+		for i := range d {
+			sum += d[i] * mults[i]
+		}
+		cd := (sum * 10) % 11
+		if cd == 10 {
+			cd = 0
+		}
+		return cd
+	}
+	return digits[9] == checkDigit(digits[:9], multipliers1) &&
+		digits[10] == checkDigit(digits[:10], multipliers2)
 }
