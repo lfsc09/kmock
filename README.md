@@ -50,7 +50,9 @@ It covers a wide range of domains, with locale support for region-specific data.
 | `Company` | `Suffix` | `[locale]` |
 | `Company` | `EIN` | |
 | `Company` | `CNPJLegacyValid` | |
+| `Company` | `CNPJLegacyInvalid` | |
 | `Company` | `CNPJAlphanumericValid` | |
+| `Company` | `CNPJAlphanumericInvalid` | |
 | `Company` | `IE` | |
 | `Company` | `CNAE` | |
 | `Currency` | `Name` | |
@@ -98,6 +100,7 @@ It covers a wide range of domains, with locale support for region-specific data.
 | `Person` | `Password` | `[strength]` |
 | `Person` | `JobTitle` | `[locale]` |
 | `Person` | `CPFValid` | |
+| `Person` | `CPFInvalid` | |
 | [`Regex`](#randexp-package) | [`Generate`](#regex-generator) | `[pattern]` |
 | [`Regex`](#randexp-package) | `ClearCache` | |
 

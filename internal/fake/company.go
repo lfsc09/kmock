@@ -75,6 +75,31 @@ func (c Company) CNPJLegacyValid() string {
 	)
 }
 
+// CNPJLegacyInvalid generates a random invalid legacy (00.000.000/0000-00) Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company.
+func (c Company) CNPJLegacyInvalid() string {
+	cnpj := make([]int, 12)
+	// Generate the first 12 digits
+	for i := range 12 {
+		cnpj[i] = randkit.RandomIntegerBetween(c.Rng, 0, 9)
+	}
+	// Multipliers for checksum digits
+	multipliers1 := []int{5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2}
+	multipliers2 := []int{6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2}
+	// Calculate the first checksum digit
+	cnpj = append(cnpj[:12], cnpjChecksum(cnpj[:12], multipliers1))
+	// Calculate the second checksum digit
+	cnpj = append(cnpj[:13], cnpjChecksum(cnpj[:13], multipliers2))
+	// Alter the last checksum digit to make it invalid
+	cnpj[13] = (cnpj[13] + 1) % 10
+	return fmt.Sprintf("%02d.%03d.%03d/%04d-%02d",
+		cnpj[0]*10+cnpj[1],
+		cnpj[2]*100+cnpj[3]*10+cnpj[4],
+		cnpj[5]*100+cnpj[6]*10+cnpj[7],
+		cnpj[8]*1000+cnpj[9]*100+cnpj[10]*10+cnpj[11],
+		cnpj[12]*10+cnpj[13],
+	)
+}
+
 // CNPJAlphanumericValid generates a random valid alphanumeric Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company.
 func (c Company) CNPJAlphanumericValid() string {
 	cnpj := make([]byte, 12)
@@ -89,6 +114,31 @@ func (c Company) CNPJAlphanumericValid() string {
 	cnpj = append(cnpj[:12], cnpjChecksum(cnpj[:12], multipliers1))
 	// Calculate the second checksum digit
 	cnpj = append(cnpj[:13], cnpjChecksum(cnpj[:13], multipliers2))
+	return fmt.Sprintf("%02s.%03s.%03s/%04s-%02s",
+		string(cnpj[0:2]),
+		string(cnpj[2:5]),
+		string(cnpj[5:8]),
+		string(cnpj[8:12]),
+		string(cnpj[12:14]),
+	)
+}
+
+// CNPJAlphanumericInvalid generates a random invalid alphanumeric Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company.
+func (c Company) CNPJAlphanumericInvalid() string {
+	cnpj := make([]byte, 12)
+	// Generate the first 12 digits
+	for i := range 12 {
+		cnpj[i] = randkit.RandomAlphanumeric(c.Rng, true)[0]
+	}
+	// Multipliers for checksum digits
+	multipliers1 := []int{5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2}
+	multipliers2 := []int{6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2}
+	// Calculate the first checksum digit
+	cnpj = append(cnpj[:12], cnpjChecksum(cnpj[:12], multipliers1))
+	// Calculate the second checksum digit
+	cnpj = append(cnpj[:13], cnpjChecksum(cnpj[:13], multipliers2))
+	// Alter the last checksum digit to make it invalid
+	cnpj[13] = byte((int(cnpj[13])-48+1)%10) + 48
 	return fmt.Sprintf("%02s.%03s.%03s/%04s-%02s",
 		string(cnpj[0:2]),
 		string(cnpj[2:5]),
@@ -150,6 +200,24 @@ func (c Company) RuntimeDocs() []*RunTimeDocs {
 			Domain:      "Company",
 			Method:      "CNPJLegacyValid",
 			Description: "Generates a random valid legacy (00.000.000/0000-00) Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Company",
+			Method:      "CNPJLegacyInvalid",
+			Description: "Generates a random invalid legacy (00.000.000/0000-00) Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Company",
+			Method:      "CNPJAlphanumericValid",
+			Description: "Generates a random valid alphanumeric Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company",
+			Params:      []string{},
+		},
+		{
+			Domain:      "Company",
+			Method:      "CNPJAlphanumericInvalid",
+			Description: "Generates a random invalid alphanumeric Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica) number for a company",
 			Params:      []string{},
 		},
 		{
