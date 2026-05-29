@@ -11,6 +11,11 @@ import (
 	"time"
 )
 
+type weigthedChoice[T any] struct {
+	value  T
+	weight int
+}
+
 const (
 	letterLowerCaseStart = 97  // ASCII code for 'a'
 	letterLowerCaseEnd   = 122 // ASCII code for 'z'
@@ -271,6 +276,32 @@ func PickFromList[T any](rng *rand.Rand, list []T) T {
 	}
 
 	return list[rng.Int()%len(list)]
+}
+
+// PickFromWeightedList selects a random element from the provided list of weighted choices using the given random number generator. If the list is empty, it returns the zero value for the type T.
+func PickFromWeightedList[T any](rng *rand.Rand, list []weigthedChoice[T]) T {
+	// Return zero value for the list type
+	if len(list) == 0 {
+		var zero T
+		return zero
+	}
+
+	totalWeight := 0
+	for _, item := range list {
+		totalWeight += item.weight
+	}
+
+	randomWeight := rng.Int() % totalWeight
+	for _, item := range list {
+		if randomWeight < item.weight {
+			return item.value
+		}
+		randomWeight -= item.weight
+	}
+
+	// Fallback in case of an unexpected issue (should not happen)
+	var zero T
+	return zero
 }
 
 // PickFromMapKeys selects a random key from the provided map using the given random number generator. If the map is empty, it returns the zero value for the key type K.
